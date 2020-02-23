@@ -19,5 +19,4 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.RecyclerView);
     }
 
-
 }
