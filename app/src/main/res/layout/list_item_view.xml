@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    android:gravity="center_vertical"
     android:background="@android:color/darker_gray"
     >
 
@@ -22,7 +22,7 @@
         android:id="@+id/news_header"
         android:layout_toEndOf="@id/news_image"
         android:layout_marginStart="10dp"
-        android:text="ExampleList"
+        tools:context="ExampleList"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         />
