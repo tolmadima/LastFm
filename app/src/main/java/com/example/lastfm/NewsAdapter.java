@@ -10,64 +10,80 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.ArrayList;
 
-public class NewsAdapter extends RecyclerView.Adapter {
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
-        private ArrayList NewsDataSet;
-        public Context mContext;
-        private int lastPosition = -1;
-        public static class MyViewHolder extends RecyclerView.ViewHolder  {
-            TextView textHeader;
-            TextView textText;
-            ImageView imageNews;
+        private List<NewsData> newsList = new ArrayList<>();
 
-            public MyViewHolder(View itemView){
+
+        public void setItems(Collection<NewsData> news){
+            newsList.addAll(news);
+            notifyDataSetChanged();
+        }
+
+
+
+        public void clearItems(){
+            newsList.clear();
+            notifyDataSetChanged();
+        }
+
+
+
+        class NewsViewHolder extends RecyclerView.ViewHolder  {
+           private TextView textHeader;
+           private TextView textDescription;
+           private ImageView imageNews;
+
+
+
+            public NewsViewHolder(View itemView){
                 super (itemView);
-                this.imageNews = (ImageView)itemView.findViewById(R.id.news_image);
-                this.textHeader = (TextView)itemView.findViewById(R.id.news_header);
-                this.textText = (TextView)itemView.findViewById(R.id.news_text);
+                imageNews = itemView.findViewById(R.id.news_image);
+                textHeader = itemView.findViewById(R.id.news_header);
+                textDescription = itemView.findViewById(R.id.news_description);
             }
+
+
+
+            public void bind(NewsData news) {
+                textHeader.setText(news.getHeader());
+                textDescription.setText(news.getDescription());
+                String newsPhotoUrl = news.getImage();
+                Picasso.get().load(newsPhotoUrl).into(imageNews);
+
+                imageNews.setVisibility(newsPhotoUrl != null ? View.VISIBLE : View.GONE);
+            }
+
+
         }
 
 
 
-        public NewsAdapter(Context context, ArrayList news){
-            this.NewsDataSet= news;
-            mContext=context;
-        }
+        private NewsAdapter newsAdapter;
 
 
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent,
+        public NewsViewHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.list_item_view, parent, false);
-            MyViewHolder myViewHolder = new MyViewHolder(view);
-
-            return myViewHolder;
+            NewsViewHolder newsViewHolder = new NewsViewHolder(view);
+            return newsViewHolder;
         }
 
-    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int listPosition) {
+    @Override
+    public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
+    }
 
-            final TextView textViewName = holder.textHeader;
-            final TextView textViewUniverse = holder.textText;
-            ImageView imageViewNews = holder.imageNews;
-            textViewName.setText(NewsDataSet.get(listPosition).getHeader());
-            textViewUniverse.setText(NewsDataSet.get(listPosition).getText());
 
-            String src = NewsDataSet.get(listPosition).getImage();
-            Picasso.with(mContext)
-                    .load("file:///android_asset/images/"+src+".jpg")
-                    .resize(300, 300)
-                    .into(imageViewNews);
-        }
-
-        @Override
-        public int getItemCount() {
-            return NewsDataSet.size();
-        }
+    @Override
+    public int getItemCount() {
+        return newsList.size();
+    }
 
 }
