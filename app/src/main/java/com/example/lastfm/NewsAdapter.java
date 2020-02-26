@@ -64,7 +64,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
 
 
-        private NewsAdapter newsAdapter;
 
 
         @Override
@@ -78,6 +77,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
+            holder.bind(newsList.get(position));
     }
 
 
