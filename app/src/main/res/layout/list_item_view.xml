@@ -10,8 +10,8 @@
     >
 
     <ImageView
-        android:layout_height="50dp"
-        android:layout_width="50dp"
+        android:layout_height="125dp"
+        android:layout_width="125dp"
         android:scaleType="centerCrop"
         android:id="@+id/news_image"
 
@@ -32,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/news_image"
+        android:textColor="@color/fontcolour"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
 
