@@ -15,4 +15,9 @@ public class NewsData {
     public String getHeader(){return Header;}
     public String getImage(){return Image;}
     public String getDescription(){return Description;}
+
+    public void setHeader(String header) {Header = header;}
+    public void setDescription(String description) {Description = description;}
+    public void setImage(String image) {Image = image;}
+
 }
