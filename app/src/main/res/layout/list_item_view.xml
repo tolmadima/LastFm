@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    android:background="@color/backgroundcolour"
+    android:background="@color/background_colour"
     >
 
     <ImageView
@@ -23,7 +23,7 @@
         android:layout_toEndOf="@id/news_image"
         android:layout_marginStart="10dp"
         tools:context="ExampleList"
-        android:textColor="@color/fontcolour"
+        android:textColor="@color/font_colour"
         android:textStyle="bold"
         />
 
@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/news_image"
-        android:textColor="@color/fontcolour"
+        android:textColor="@color/font_colour"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
 
