@@ -35,28 +35,28 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
 
         class NewsViewHolder extends RecyclerView.ViewHolder  {
-           private TextView textHeader;
-           private TextView textDescription;
-           private ImageView imageNews;
+           private TextView tvHeader;
+           private TextView tvDescription;
+           private ImageView ivNews;
 
 
 
             public NewsViewHolder(View itemView){
                 super (itemView);
-                imageNews = itemView.findViewById(R.id.news_image);
-                textHeader = itemView.findViewById(R.id.news_header);
-                textDescription = itemView.findViewById(R.id.news_description);
+                ivNews = itemView.findViewById(R.id.news_image);
+                tvHeader = itemView.findViewById(R.id.news_header);
+                tvDescription = itemView.findViewById(R.id.news_description);
             }
 
 
 
             public void bind(NewsData news) {
-                textHeader.setText(news.getHeader());
-                textDescription.setText(news.getDescription());
+                tvHeader.setText(news.getHeader());
+                tvDescription.setText(news.getDescription());
                 String newsPhotoUrl = news.getImage();
-                Picasso.get().load(newsPhotoUrl).into(imageNews);
+                Picasso.get().load(newsPhotoUrl).into(ivNews);
 
-                imageNews.setVisibility(newsPhotoUrl != null ? View.VISIBLE : View.GONE);
+                ivNews.setVisibility(newsPhotoUrl != null ? View.VISIBLE : View.GONE);
             }
 
 

@@ -18,9 +18,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageView newsImage;
-    private TextView textHeader;
-    private TextView textDescription;
+    private ImageView ivImage;
+    private TextView tvHeader;
+    private TextView tvDescription;
 
 
     private RecyclerView newsRecyclerView;
