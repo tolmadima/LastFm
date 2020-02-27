@@ -8,11 +8,6 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import com.example.lastfm.NewsData;
-import com.example.lastfm.NewsAdapter;
-
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,16 +17,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvHeader;
     private TextView tvDescription;
 
-
-    private RecyclerView newsRecyclerView;
     private NewsAdapter newsAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         initRecyclerView();
 
@@ -42,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
             Collection<NewsData> news = getNews();
             newsAdapter.setItems(news);
         }
-
 
         private Collection<NewsData> getNews(){
            return Arrays.asList(
@@ -68,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
                    new NewsData("Рецензия на клип: Вася Обломов - «Диги-диги»","https://cdn1.intermedia.ru/img/news/344756.jpg","Песня «Диги-диги» входила в недавний альбом Васи Обломова «Этот прекрасный мир» и была там одной из самых милых и мелодичных. Хотя «Диги-диги» и является сокращением от «дегенератов», в устах Васи это звучит почти нежно - что-то типа интонаций, с которой произносится фраза «они же дети». Клип на эту песню Обломов режиссировал сам и не стал экранизировать композицию близко к её тексту («они по левой полосе при свободных правых, у них парковка на газонах для самых-самых, они и делают ремонт, и дома строят, их услуги говно, они дорого стоят»). Вместо этого Вася Обломов, сосредоточился, на, так сказать, определённом виде дегенератов - тех, кто посещает тренинги личностного роста.")
            );
         }
+
     private void initRecyclerView() {
-        newsRecyclerView = findViewById(R.id.newsRecyclerView);
+        RecyclerView newsRecyclerView = findViewById(R.id.newsRecyclerView);
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         newsAdapter = new NewsAdapter();
         newsRecyclerView.setAdapter(newsAdapter);
