@@ -66,10 +66,4 @@ public class MainActivity extends AppCompatActivity {
         newsRecyclerView.setAdapter(newsAdapter);
     }
 
-
-
-
-
-
-
 }
