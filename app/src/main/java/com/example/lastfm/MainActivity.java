@@ -4,18 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageView ivImage;
-    private TextView tvHeader;
-    private TextView tvDescription;
+
+
+    private static final String APP_ID = "asd";
+
 
     private NewsAdapter newsAdapter;
 
@@ -24,9 +34,52 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initRecyclerView();
+        String url = String.format("http://ws.audioscrobbler.com/2.0/?method=chart.gettoptags&api_key=b4ab3bf82dcb495e182e04cfc1f12b7b");
 
-        loadNews();
+        initRecyclerView();
+        //loadNews();
+        TextView textView = findViewById(R.id.newsRecyclerView);
+        new GetTopTask(textView).execute(url);
+    }
+
+    private static class GetTopTask extends AsyncTask<String, Void, String> {
+        private TextView textView;
+
+        GetTopTask(TextView textView) {
+            this.textView = textView;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String top = "UNDEFINED";
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder builder = new StringBuilder();
+
+                String inputString;
+                while ((inputString = bufferedReader.readLine()) != null) {
+                    builder.append(inputString);
+                }
+
+                JSONObject topLevel = new JSONObject(builder.toString());
+                JSONObject main = topLevel.getJSONObject("main");
+                top = String.valueOf(main.getDouble("toptag"));
+
+                urlConnection.disconnect();
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return top;
+        }
+
+        @Override
+        protected void onPostExecute(String top) {
+            textView.setText("Top tag:" + top);
+        }
     }
 
         private void loadNews(){
@@ -65,5 +118,6 @@ public class MainActivity extends AppCompatActivity {
         newsAdapter = new NewsAdapter();
         newsRecyclerView.setAdapter(newsAdapter);
     }
+
 
 }
