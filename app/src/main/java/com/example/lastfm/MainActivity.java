@@ -34,24 +34,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String url = String.format("http://ws.audioscrobbler.com/2.0/?method=chart.gettoptags&api_key=b4ab3bf82dcb495e182e04cfc1f12b7b");
+        String url = String.format("http://ws.audioscrobbler.com/2.0/?method=chart.gettoptags&limit=1&api_key=b4ab3bf82dcb495e182e04cfc1f12b7b&format=json");
 
         initRecyclerView();
-        //loadNews();
-        TextView textView = findViewById(R.id.newsRecyclerView);
+        loadNews();
+        TextView textView = findViewById(R.id.asynctask_view);
         new GetTopTask(textView).execute(url);
     }
 
     private static class GetTopTask extends AsyncTask<String, Void, String> {
-        private TextView textView;
+        private TextView tvTop;
 
         GetTopTask(TextView textView) {
-            this.textView = textView;
+            this.tvTop = textView;
         }
 
         @Override
         protected String doInBackground(String... strings) {
-            String top = "UNDEFINED";
+            String tagName = "UNDEFINED";
             try {
                 URL url = new URL(strings[0]);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -66,19 +66,19 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 JSONObject topLevel = new JSONObject(builder.toString());
-                JSONObject main = topLevel.getJSONObject("main");
-                top = String.valueOf(main.getDouble("toptag"));
+                JSONObject main = topLevel.getJSONObject("tags");
+                tagName = main.getString("name");
 
                 urlConnection.disconnect();
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
-            return top;
+            return tagName;
         }
 
         @Override
-        protected void onPostExecute(String top) {
-            textView.setText("Top tag:" + top);
+        protected void onPostExecute(String tagName) {
+            tvTop.setText("Top tag:" + tagName);
         }
     }
 
