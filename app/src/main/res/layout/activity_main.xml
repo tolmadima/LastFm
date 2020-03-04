@@ -7,17 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <android.widget.TextView
-        android:layout_width="match_parent"
-        android:layout_height="74dp"
-        tools:context="Getting Tags"
-        android:id="@+id/asynctask_view"
-        android:textSize="28sp"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
         android:id="@+id/artistsRecyclerView"
     />
 </FrameLayout>

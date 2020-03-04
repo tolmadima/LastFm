@@ -43,16 +43,16 @@ public class MainActivity extends AppCompatActivity {
 
         initRecyclerView();
         loadArtists();
-        TextView textView = findViewById(R.id.asynctask_view);
-        new GetTopArtistTask(textView).execute(url);
+        RecyclerView ArtistRecylcerView = findViewById(R.id.artistsRecyclerView);
+        new GetTopArtistTask(ArtistRecylcerView).execute(url);
     }
 
     private static class GetTopArtistTask extends AsyncTask<String, Void, ArrayList<String>> {
-        private TextView tvTop;
 
-        GetTopArtistTask(TextView textView) {
-            this.tvTop = textView;
+        GetTopArtistTask(RecyclerView textView) {
+            this.tvName = textView;
         }
+//        Начал делать правки, все сломал, сегодня не осталось времени переписать под RecylcerView, а не TextView, надеюсь завтра получится.
         @Override
         protected ArrayList<String> doInBackground(String... strings) {
             final ArrayList<String> listofartists = new ArrayList<String>();
