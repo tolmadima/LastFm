@@ -13,14 +13,14 @@
         android:layout_height="@dimen/image_size"
         android:layout_width="@dimen/image_size"
         android:scaleType="centerCrop"
-        android:id="@+id/news_image"
+        android:id="@+id/artist_image"
 
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/news_header"
-        android:layout_toEndOf="@id/news_image"
+        android:id="@+id/artist_name"
+        android:layout_toEndOf="@id/artist_image"
         android:layout_marginStart="@dimen/item_margin"
         tools:context="ExampleList"
         android:textColor="@color/font_colour"
@@ -28,10 +28,10 @@
         />
 
     <TextView
-        android:id="@+id/news_description"
+        android:id="@+id/artist_playcount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/news_image"
+        android:layout_below="@+id/artist_image"
         android:textColor="@color/font_colour"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/item_margin" />
