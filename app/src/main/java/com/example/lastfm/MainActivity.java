@@ -91,18 +91,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<String> listofartists) {
-            System.out.println(listofartists);
-
+            super.onPostExecute(listofartists);
         }
     }
 
         private void loadArtists(){
-        Collection<ArtistsData> artists = getArtists();
+        ArrayList<ArtistsData> artists = getArtists();
         artistsAdapter.setItems(artists);
     }
 
-        private Collection<ArtistsData> getArtists(){
-           return Arrays.asList();
+        private ArrayList<ArtistsData> getArtists(){
+           return ;
         }
 
     private void initRecyclerView() {
