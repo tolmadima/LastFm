@@ -6,10 +6,10 @@ public class ArtistsData {
     private String PlayCount;
 
 
-    ArtistsData(String ArtistsData, String Image, String PlayCount){
-        this.ArtistName = ArtistsData;
-        this.Image = Image;
-        this.PlayCount = PlayCount;
+    public ArtistsData(String artistsName, String image, String playCount){
+        this.ArtistName = artistsName;
+        this.Image = image;
+        this.PlayCount = playCount;
     }
 
     public String getArtistName(){return ArtistName;}

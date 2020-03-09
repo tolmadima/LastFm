@@ -17,10 +17,10 @@ import java.util.ArrayList;
 
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistsViewHolder> {
 
-    private List<ArtistsData> artistsList = new ArrayList<>();
+    private ArrayList<ArtistsData> artistsList = new ArrayList<>();
 
 
-    public void setItems(Collection<ArtistsData> artists){
+    public void setItems(ArrayList<ArtistsData> artists){
         artistsList.addAll(artists);
         notifyDataSetChanged();
     }
