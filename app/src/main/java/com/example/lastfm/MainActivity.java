@@ -74,28 +74,27 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject topLevel = new JSONObject(builder.toString());
                 JSONObject main = topLevel.getJSONObject("artists");
                 JSONArray artist = (JSONArray) main.get("artist");
-                listartists = new ArtistParser(artist);
-                }
+//                listartists = new ArtistParser(artist);
 
                 urlConnection.disconnect();
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
-            return ;
+            return listartists;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> listartists) {
+        protected void onPostExecute(List<ArtistsData> listartists) {
             super.onPostExecute(listartists);
-                lsArtist = listartists;
+
 
         }
     }
 
 
         private void loadArtists(){
-            ArrayList<ArtistsData> artistsDataArrayList();
-                artistsDataArrayList.set(1, Image);
+//            ArrayList<ArtistsData> artistsDataArrayList();
+//                artistsDataArrayList.set(1, Image);
     }
 
     private void initRecyclerView() {
