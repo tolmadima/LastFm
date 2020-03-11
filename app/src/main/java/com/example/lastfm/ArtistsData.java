@@ -1,22 +1,27 @@
 package com.example.lastfm;
 
 public class ArtistsData {
-    private String ArtistName;
-    private String Image;
-    private String PlayCount;
 
+    ArtistsData(){
 
-    public ArtistsData(String artistsName, String image, String playCount){
-        this.ArtistName = artistsName;
-        this.Image = image;
-        this.PlayCount = playCount;
     }
 
-    public String getArtistName(){return ArtistName;}
-    public String getImage(){return Image;}
-    public String getPlayCount(){return PlayCount;}
+    private String name;
+//    private String image;
+    private String playcount;
 
-    public void setArtistName(String artistname) {ArtistName = artistname;}
-    public void setPlayCount(String playcount) {PlayCount = playcount;}
-    public void setImage(String image) {Image = image;}
+
+    public ArtistsData(String artistName, String artistImage, String artistPlayCount){
+        this.name = artistName;
+//        this.image = artistImage;
+        this.playcount = artistPlayCount;
+    }
+
+    public String getArtistName(){return name;}
+//    public String getImage(){return image;}
+    public String getPlayCount(){return playcount;}
+
+    public void setArtistName(String artistname) {name = artistname;}
+    public void setPlayCount(String artistPlayCount) {playcount = artistPlayCount;}
+//    public void setImage(String artistImage) {image = artistImage;}
 }

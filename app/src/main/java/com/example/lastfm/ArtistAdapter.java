@@ -17,10 +17,10 @@ import java.util.ArrayList;
 
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistsViewHolder> {
 
-    private ArrayList<ArtistsData> artistsList = new ArrayList<>();
+    private List<ArtistsData> artistsList = new ArrayList<>();
 
 
-    public void setItems(ArrayList<ArtistsData> artists){
+    public void setItems(List<ArtistsData> artists){
         artistsList.addAll(artists);
         notifyDataSetChanged();
     }
@@ -53,10 +53,10 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistsVie
         public void bind(ArtistsData artists) {
             tvName.setText(artists.getArtistName());
             tvPlayCount.setText(artists.getPlayCount());
-            String newsPhotoUrl = artists.getImage();
-            Picasso.get().load(newsPhotoUrl).into(ivImage);
-
-            ivImage.setVisibility(newsPhotoUrl != null ? View.VISIBLE : View.GONE);
+//            String newsPhotoUrl = artists.getImage();
+//            Picasso.get().load(newsPhotoUrl).into(ivImage);
+//
+//            ivImage.setVisibility(newsPhotoUrl != null ? View.VISIBLE : View.GONE);
         }
 
 

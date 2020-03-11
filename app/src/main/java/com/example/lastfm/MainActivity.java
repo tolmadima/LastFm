@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.widget.Adapter;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,13 +32,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static List<String> lsArtist;
-
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
     private static final Integer NumberOfArtists = 10;
 
-
-    private ArtistAdapter artistsAdapter;
+    private static ArtistAdapter artistsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +45,18 @@ public class MainActivity extends AppCompatActivity {
         @SuppressLint("DefaultLocale") String url = String.format("http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&limit=%d&api_key=%s&format=json",NumberOfArtists,APP_ID);
 
         initRecyclerView();
-        loadArtists();
-        RecyclerView ArtistRecylcerView = findViewById(R.id.artistsRecyclerView);
         new GetTopArtistTask(artistsAdapter).execute(url);
     }
 
     private static class GetTopArtistTask extends AsyncTask<String, Void, List<ArtistsData>> {
 
         GetTopArtistTask(ArtistAdapter artistAdapter) { }
+        ArtistsData artistData = new ArtistsData();
+        List<ArtistsData> lsArtist = new ArrayList<>();
 
         @Override
         protected List<ArtistsData> doInBackground(String... strings) {
-            final List<ArtistsData> listartists = new ArrayList<ArtistsData>();
+
             try {
                 URL url = new URL(strings[0]);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -73,28 +72,31 @@ public class MainActivity extends AppCompatActivity {
 
                 JSONObject topLevel = new JSONObject(builder.toString());
                 JSONObject main = topLevel.getJSONObject("artists");
-                JSONArray artist = (JSONArray) main.get("artist");
-//                listartists = new ArtistParser(artist);
+                JSONArray artist = main.getJSONArray("artist");
+                Gson gson = new Gson();
+                int Number = NumberOfArtists;
+                for(int i=0; i<Number; i++){
+                    JSONObject artistObj = artist.getJSONObject(i);
+                    artistData = gson.fromJson(String.valueOf(artistObj), ArtistsData.class);
+                    lsArtist.add(i,artistData);
+                }
 
                 urlConnection.disconnect();
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
-            return listartists;
+            return lsArtist;
         }
 
         @Override
-        protected void onPostExecute(List<ArtistsData> listartists) {
-            super.onPostExecute(listartists);
-
-
+        protected void onPostExecute(List<ArtistsData> lsArtist) {
+            super.onPostExecute(lsArtist);
+            loadArtists(lsArtist);
         }
     }
 
-
-        private void loadArtists(){
-//            ArrayList<ArtistsData> artistsDataArrayList();
-//                artistsDataArrayList.set(1, Image);
+    public static void loadArtists(List<ArtistsData> artistData){
+        artistsAdapter.setItems(artistData);
     }
 
     private void initRecyclerView() {
@@ -103,7 +105,4 @@ public class MainActivity extends AppCompatActivity {
         artistsAdapter = new ArtistAdapter();
         artistsRecyclerView.setAdapter(artistsAdapter);
     }
-
-
-
 }
