@@ -1,16 +1,12 @@
 package com.example.lastfm;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.Adapter;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -26,36 +22,30 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
-    private static final Integer NumberOfArtists = 10;
-
+    private static final Integer NUMBER_OF_ARTISTS = 10;
+    private static final String PARSER_PARAM = "artists";
     private static ArtistAdapter artistsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        @SuppressLint("DefaultLocale") String url = String.format("http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&limit=%d&api_key=%s&format=json",NumberOfArtists,APP_ID);
-
+        @SuppressLint("DefaultLocale") String url = String.format("http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&limit=%d&api_key=%s&format=json", NUMBER_OF_ARTISTS,APP_ID);
         initRecyclerView();
         new GetTopArtistTask(artistsAdapter).execute(url);
     }
 
-    private static class GetTopArtistTask extends AsyncTask<String, Void, List<ArtistsData>> {
-
+    private static class GetTopArtistTask extends AsyncTask<String, Void, List<Artists>> {
         GetTopArtistTask(ArtistAdapter artistAdapter) { }
-        ArtistsData artistData = new ArtistsData();
-        List<ArtistsData> lsArtist = new ArrayList<>();
+        Artists artistData = new Artists();
+        List<Artists> artistsDataList = new ArrayList<>();
 
         @Override
-        protected List<ArtistsData> doInBackground(String... strings) {
+        protected List<Artists> doInBackground(String... strings) {
 
             try {
                 URL url = new URL(strings[0]);
@@ -71,31 +61,30 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 JSONObject topLevel = new JSONObject(builder.toString());
-                JSONObject main = topLevel.getJSONObject("artists");
+                JSONObject main = topLevel.getJSONObject(PARSER_PARAM);
                 JSONArray artist = main.getJSONArray("artist");
                 Gson gson = new Gson();
-                int Number = NumberOfArtists;
+                int Number = NUMBER_OF_ARTISTS;
                 for(int i=0; i<Number; i++){
                     JSONObject artistObj = artist.getJSONObject(i);
-                    artistData = gson.fromJson(String.valueOf(artistObj), ArtistsData.class);
-                    lsArtist.add(i,artistData);
+                    artistData = gson.fromJson(String.valueOf(artistObj), Artists.class);
+                    artistsDataList.add(i,artistData);
                 }
-
                 urlConnection.disconnect();
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
-            return lsArtist;
+            return artistsDataList;
         }
 
         @Override
-        protected void onPostExecute(List<ArtistsData> lsArtist) {
+        protected void onPostExecute(List<Artists> lsArtist) {
             super.onPostExecute(lsArtist);
-            loadArtists(lsArtist);
+            setArtists(lsArtist);
         }
     }
 
-    public static void loadArtists(List<ArtistsData> artistData){
+    public static void setArtists(List<Artists> artistData){
         artistsAdapter.setItems(artistData);
     }
 
