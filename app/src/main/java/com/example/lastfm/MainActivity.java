@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Service;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -24,6 +25,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity extends AppCompatActivity {
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
     private static final Integer NUMBER_OF_ARTISTS = 10;
@@ -36,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         @SuppressLint("DefaultLocale") String url = String.format("http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&limit=%d&api_key=%s&format=json", NUMBER_OF_ARTISTS,APP_ID);
         initRecyclerView();
-        new GetTopArtistTask(artistsAdapter).execute(url);
+        new GetTopArtistTask().execute(url);
     }
 
     private static class GetTopArtistTask extends AsyncTask<String, Void, List<Artists>> {
-        GetTopArtistTask(ArtistAdapter artistAdapter) { }
+
         Artists artistData = new Artists();
         List<Artists> artistsDataList = new ArrayList<>();
 
@@ -48,39 +55,21 @@ public class MainActivity extends AppCompatActivity {
         protected List<Artists> doInBackground(String... strings) {
 
             try {
-                URL url = new URL(strings[0]);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-
-                InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
-                StringBuilder builder = new StringBuilder();
-
-                String inputString;
-                while ((inputString = bufferedReader.readLine()) != null) {
-                    builder.append(inputString);
-                }
-
-                JSONObject topLevel = new JSONObject(builder.toString());
-                JSONObject main = topLevel.getJSONObject(PARSER_PARAM);
-                JSONArray artist = main.getJSONArray("artist");
-                Gson gson = new Gson();
-                int Number = NUMBER_OF_ARTISTS;
-                for(int i=0; i<Number; i++){
-                    JSONObject artistObj = artist.getJSONObject(i);
-                    artistData = gson.fromJson(String.valueOf(artistObj), Artists.class);
-                    artistsDataList.add(i,artistData);
-                }
-                urlConnection.disconnect();
-            } catch (IOException | JSONException e) {
+                LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
+                Call<List<Artists>> call = lastFMClient.numberArtists(10,"b4ab3bf82dcb495e182e04cfc1f12b7b","json");
+                List<Artists> task = call.execute().body();
+                System.out.println(task);
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
             return artistsDataList;
         }
 
         @Override
-        protected void onPostExecute(List<Artists> lsArtist) {
-            super.onPostExecute(lsArtist);
-            setArtists(lsArtist);
+        protected void onPostExecute(List<Artists> artistsDataList) {
+            super.onPostExecute(artistsDataList);
+            setArtists(artistsDataList);
         }
     }
 
