@@ -6,10 +6,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
+import android.app.job.JobInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private static final Integer NUMBER_OF_ARTISTS = 10;
     private static final String PARSER_PARAM = "artists";
     private static ArtistAdapter artistsAdapter;
+    private static final String TAG = "Retrofit Error tracking";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +61,25 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-                Call<List<Artists>> call = lastFMClient.numberArtists(10,"b4ab3bf82dcb495e182e04cfc1f12b7b","json");
-                List<Artists> task = call.execute().body();
-                System.out.println(task);
+                Log.i(TAG,"Using Client is ok");
+                Call<JsonObject> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS,APP_ID,"json");
+                Log.i(TAG,"Call Sucessfull");
+                Response<JsonObject> task = call.execute();
+                Log.i(TAG, "Body = 0");
+                JsonObject response = task.body();
+                Log.e(TAG, "Body contain : "+new Gson().toJson(task.body()) );
+                System.out.println(response);
+                Log.i(TAG, "Task is ok");
+                Gson gson = new Gson();
+                assert response != null;
+                JsonObject parsing = response.getAsJsonObject(PARSER_PARAM);
+                JsonArray artist = parsing.getAsJsonArray("artist");
+                JSONArray artistJson = new JSONArray(gson.toJson(artist));
+                for(int i=0; i<NUMBER_OF_ARTISTS; i++) {
+                    JSONObject artistObj = artistJson.getJSONObject(i);
+                    artistData = gson.fromJson(String.valueOf(artistObj), Artists.class);
+                    artistsDataList.add(i, artistData);
+                }
             }
             catch (Exception e) {
                 e.printStackTrace();
