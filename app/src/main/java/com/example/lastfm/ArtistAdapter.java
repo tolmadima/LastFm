@@ -2,6 +2,8 @@ package com.example.lastfm;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +33,14 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistsViewHolder> {
                                               int viewType) {
         View viewArtists = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_view, parent, false);
+        Log.e("View","Sozdali view dly holdera");
         return new ArtistsViewHolder(viewArtists);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ArtistsViewHolder holder, int position) {
         holder.bind(artistsList.get(position));
+        Log.e("Bind", "ZabindiliDatu po pozicii" + position);
     }
 
     @Override

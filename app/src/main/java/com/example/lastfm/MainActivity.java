@@ -18,7 +18,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
-    private static final Integer NUMBER_OF_ARTISTS = 10;
+    private static final Integer NUMBER_OF_ARTISTS = 40;
     private static final String PARSER_PARAM = "artists";
     private static ArtistAdapter artistsAdapter;
     private static final String TAG = "Retrofit Error tracking";
