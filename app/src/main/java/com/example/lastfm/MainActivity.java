@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,60 +42,52 @@ public class MainActivity extends AppCompatActivity {
     private static final String PARSER_PARAM = "artists";
     private static ArtistAdapter artistsAdapter;
     private static final String TAG = "Retrofit Error tracking";
+    private static List<Artists> artistsDataList = new ArrayList<>();
+    private static Artists artistData = new Artists();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        @SuppressLint("DefaultLocale") String url = String.format("http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&limit=%d&api_key=%s&format=json", NUMBER_OF_ARTISTS,APP_ID);
+        @SuppressLint("DefaultLocale") String url = String.format("http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&limit=%d&api_key=%s&format=json", NUMBER_OF_ARTISTS, APP_ID);
         initRecyclerView();
-        new GetTopArtistTask().execute(url);
+        retrofitRequest();
     }
-
-    private static class GetTopArtistTask extends AsyncTask<String, Void, List<Artists>> {
-
-        Artists artistData = new Artists();
-        List<Artists> artistsDataList = new ArrayList<>();
-
-        @Override
-        protected List<Artists> doInBackground(String... strings) {
-
-            try {
-                LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-                Log.i(TAG,"Using Client is ok");
-                Call<JsonObject> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS,APP_ID,"json");
-                Log.i(TAG,"Call Sucessfull");
-                Response<JsonObject> task = call.execute();
-                Log.i(TAG, "Body = 0");
-                JsonObject response = task.body();
-                Log.e(TAG, "Body contain : "+new Gson().toJson(task.body()) );
-                System.out.println(response);
-                Log.i(TAG, "Task is ok");
-                Gson gson = new Gson();
-                assert response != null;
-                JsonObject parsing = response.getAsJsonObject(PARSER_PARAM);
-                JsonArray artist = parsing.getAsJsonArray("artist");
-                JSONArray artistJson = new JSONArray(gson.toJson(artist));
-                for(int i=0; i<NUMBER_OF_ARTISTS; i++) {
-                    JSONObject artistObj = artistJson.getJSONObject(i);
-                    artistData = gson.fromJson(String.valueOf(artistObj), Artists.class);
-                    artistsDataList.add(i, artistData);
+    private static List<Artists> retrofitRequest() {
+        LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
+        Call<JsonObject> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    JsonObject json = response.body();
+                    Gson gson = new Gson();
+                    assert response != null;
+                    JsonObject parsing = json.getAsJsonObject(PARSER_PARAM);
+                    JsonArray artist = parsing.getAsJsonArray("artist");
+                    JSONArray artistJson = new JSONArray(gson.toJson(artist));
+                    for (int i = 0; i < NUMBER_OF_ARTISTS; i++) {
+                        JSONObject artistObj = artistJson.getJSONObject(i);
+                        artistData = gson.fromJson(String.valueOf(artistObj), Artists.class);
+                        artistsDataList.add(i, artistData);
+                    }
+                        setArtists(artistsDataList);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-            return artistsDataList;
-        }
 
-        @Override
-        protected void onPostExecute(List<Artists> artistsDataList) {
-            super.onPostExecute(artistsDataList);
-            setArtists(artistsDataList);
-        }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG,"Error ;(");
+            }
+        });
+
+        return artistsDataList;
     }
 
-    public static void setArtists(List<Artists> artistData){
+    private static void setArtists(List<Artists> artistData){
         artistsAdapter.setItems(artistData);
     }
 
