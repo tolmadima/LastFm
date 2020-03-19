@@ -3,6 +3,8 @@ package com.example.lastfm;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.icu.text.SymbolTable;
 import android.os.Bundle;
 import android.util.Log;
 import com.google.gson.Gson;
