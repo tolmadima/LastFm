@@ -20,11 +20,11 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
-    private static final Integer NUMBER_OF_ARTISTS = 40;
+    public static final Integer NUMBER_OF_ARTISTS = 40;
     private static final String PARSER_PARAM = "artists";
     private static ArtistAdapter artistsAdapter;
     private static final String TAG = "Retrofit Error tracking";
-    private static List<Artists> artistsDataList = new ArrayList<>();
+    public static List<Artists> artistsDataList = new ArrayList<>();
     private static Artists artistData = new Artists();
 
     @Override
@@ -42,17 +42,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {
                     JsonObject json = response.body();
-                    Gson gson = new Gson();
-                    assert response != null;
-                    JsonObject parsing = json.getAsJsonObject(PARSER_PARAM);
-                    JsonArray artist = parsing.getAsJsonArray("artist");
-                    JSONArray artistJson = new JSONArray(gson.toJson(artist));
-                    for (int i = 0; i < NUMBER_OF_ARTISTS; i++) {
-                        JSONObject artistObj = artistJson.getJSONObject(i);
-                        artistData = gson.fromJson(String.valueOf(artistObj), Artists.class);
-                        artistsDataList.add(i, artistData);
-                    }
-                        setArtists(artistsDataList);
+                    System.out.println(json);
+                    setArtists(artistsDataList);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

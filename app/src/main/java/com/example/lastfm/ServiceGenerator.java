@@ -36,9 +36,9 @@ public class ServiceGenerator {
 
     private  static Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(
-                    GsonConverterFactory.create(gson))
-                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+            .client(httpClient.build())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson));
 
     private static HttpLoggingInterceptor logging =
             new HttpLoggingInterceptor()
