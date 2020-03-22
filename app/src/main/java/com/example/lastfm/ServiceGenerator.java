@@ -47,8 +47,7 @@ public class ServiceGenerator {
 
     private static Retrofit retrofit = builder.build();
 
-    public static <S> S createService(
-            Class<S> serviceClass) {
+    public static <S> S createService(Class<S> serviceClass) {
         if (!httpClient.interceptors().contains(logging)){
             httpClient.addInterceptor(logging);
             builder.client(httpClient.build());

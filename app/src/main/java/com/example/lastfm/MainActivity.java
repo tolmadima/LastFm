@@ -22,10 +22,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
     public static final Integer NUMBER_OF_ARTISTS = 40;
     private static final String PARSER_PARAM = "artists";
-    private static ArtistAdapter artistsAdapter;
-    private static final String TAG = "Retrofit Error tracking";
+    private final String TAG = "Retrofit Error tracking";
     public static List<Artists> artistsDataList = new ArrayList<>();
-    private static Artists artistData = new Artists();
+
+    ArtistAdapter artistsAdapter = new ArtistAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
         retrofitRequest();
     }
-    private static List<Artists> retrofitRequest() {
+    private List<Artists> retrofitRequest() {
         LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
         Call<JsonObject> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
         call.enqueue(new Callback<JsonObject>() {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         return artistsDataList;
     }
 
-    private static void setArtists(List<Artists> artistData){
+    private void setArtists(List<Artists> artistData){
         artistsAdapter.setItems(artistData);
     }
 

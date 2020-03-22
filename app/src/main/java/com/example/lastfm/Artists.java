@@ -8,9 +8,9 @@ public class Artists {
     private String playcount;
 
 
-    public Artists(String artistName, String artistPlayCount) {
-        this.name = artistName;
-        this.playcount = artistPlayCount;
+    public Artists(String name, String playCount) {
+        this.name = name;
+        this.playcount = playCount;
     }
 
     public String getArtistName() {

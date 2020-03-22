@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 
 public interface LastFMClient {
 
-    @GET("/2.0/?method=chart.gettopartists")
+    @GET("?method=chart.gettopartists")
     Call<JsonObject> numberArtists(@Query("limit")int numberArtists, @Query("api_key")String key, @Query("format")String format);
 }
 
