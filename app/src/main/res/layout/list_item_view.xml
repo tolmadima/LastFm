@@ -40,6 +40,7 @@
         android:id="@+id/next_screen_button"
         android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height"
+        android:text="Open"
         android:layout_below="@+id/artist_playcount"
         android:layout_alignStart="@id/artist_playcount"
         android:layout_marginStart="@dimen/button_padding_start"
