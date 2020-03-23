@@ -4,14 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.icu.text.SymbolTable;
 import android.os.Bundle;
 import android.util.Log;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
+
 import com.google.gson.JsonObject;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -36,14 +33,14 @@ public class MainActivity extends AppCompatActivity {
     }
     private List<Artists> retrofitRequest() {
         LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-        Call<JsonObject> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
-        call.enqueue(new Callback<JsonObject>() {
+        Call<List<Artists>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
+        call.enqueue(new Callback<List<Artists>>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<List<Artists>> call, Response<List<Artists>> response) {
                 try {
-                    JsonObject json = response.body();
-                    System.out.println(json);
-                    setArtists(artistsDataList);
+                    List<Artists> list = response.body();
+                    System.out.println(list);
+                    setArtists(list);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<List<Artists>> call, Throwable t) {
                 Log.e(TAG,"Error ;(");
             }
         });
