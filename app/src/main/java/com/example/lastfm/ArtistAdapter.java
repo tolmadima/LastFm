@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistsViewHolder> {
+public class ArtistAdapter extends RecyclerView.Adapter<ArtistsViewHolder> {
 
     private List<Artists> artistsList = new ArrayList<>();
 
@@ -23,28 +23,6 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistsVie
     public void clearItems(){
         artistsList.clear();
         notifyDataSetChanged();
-    }
-
-    static class ArtistsViewHolder extends RecyclerView.ViewHolder  {
-        private TextView tvName;
-        private TextView tvPlayCount;
-        private ImageView ivImage;
-
-        public ArtistsViewHolder(View itemView){
-            super (itemView);
-//            ivImage = itemView.findViewById(R.id.artist_image);
-            tvName = itemView.findViewById(R.id.artist_name);
-            tvPlayCount = itemView.findViewById(R.id.artist_playcount);
-        }
-
-        public void bind(Artists artists) {
-            tvName.setText(artists.getArtistName());
-            tvPlayCount.setText(artists.getPlayCount());
-//            String newsPhotoUrl = artists.getImage();
-//            Picasso.get().load(newsPhotoUrl).into(ivImage);
-//
-//            ivImage.setVisibility(newsPhotoUrl != null ? View.VISIBLE : View.GONE);
-        }
     }
 
     @NonNull
