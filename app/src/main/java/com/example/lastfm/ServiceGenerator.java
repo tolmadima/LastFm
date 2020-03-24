@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
@@ -26,7 +27,7 @@ public class ServiceGenerator {
     private static final String BASE_URL = "http://ws.audioscrobbler.com/2.0/";
 
     private static Gson gson = new GsonBuilder()
-            .setLenient()
+            .registerTypeAdapter(Artists.class, new ArtistsDeserializer())
             .create();
 
     private static OkHttpClient.Builder httpClient =
@@ -34,9 +35,8 @@ public class ServiceGenerator {
 
     private  static Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(
-                    GsonConverterFactory.create(gson)
-            );
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
     private static HttpLoggingInterceptor logging =
             new HttpLoggingInterceptor()
@@ -45,8 +45,7 @@ public class ServiceGenerator {
 
     private static Retrofit retrofit = builder.build();
 
-    public static <S> S createService(
-            Class<S> serviceClass) {
+    public static <S> S createService(Class<S> serviceClass) {
         if (!httpClient.interceptors().contains(logging)){
             httpClient.addInterceptor(logging);
             builder.client(httpClient.build());

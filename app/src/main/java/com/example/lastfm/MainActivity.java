@@ -3,6 +3,9 @@ package com.example.lastfm;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.os.Bundle;
+import android.util.Log;
+import com.google.gson.JsonObject;
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,64 +23,46 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
-    private static final Integer NUMBER_OF_ARTISTS = 10;
+    public static final Integer NUMBER_OF_ARTISTS = 40;
     private static final String PARSER_PARAM = "artists";
-    private static ArtistAdapter artistsAdapter;
-    private static final String TAG = "Retrofit Error tracking";
+    private final String TAG = "Retrofit Error tracking";
+    public static List<Artists> artistsDataList = new ArrayList<>();
+
+    ArtistAdapter artistsAdapter = new ArtistAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        @SuppressLint("DefaultLocale") String url = String.format("http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&limit=%d&api_key=%s&format=json", NUMBER_OF_ARTISTS,APP_ID);
         initRecyclerView();
-        new GetTopArtistTask().execute(url);
+        retrofitRequest();
     }
-
-    private static class GetTopArtistTask extends AsyncTask<String, Void, List<Artists>> {
-
-        Artists artistData = new Artists();
-        List<Artists> artistsDataList = new ArrayList<>();
-
-        @Override
-        protected List<Artists> doInBackground(String... strings) {
-
-            try {
-                LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-                Log.i(TAG,"Using Client is ok");
-                Call<JsonObject> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS,APP_ID,"json");
-                Log.i(TAG,"Call Sucessfull");
-                Response<JsonObject> task = call.execute();
-                Log.i(TAG, "Body = 0");
-                JsonObject response = task.body();
-                Log.e(TAG, "Body contain : "+new Gson().toJson(task.body()) );
-                System.out.println(response);
-                Log.i(TAG, "Task is ok");
-                Gson gson = new Gson();
-                assert response != null;
-                JsonObject parsing = response.getAsJsonObject(PARSER_PARAM);
-                JsonArray artist = parsing.getAsJsonArray("artist");
-                JSONArray artistJson = new JSONArray(gson.toJson(artist));
-                for(int i=0; i<NUMBER_OF_ARTISTS; i++) {
-                    JSONObject artistObj = artistJson.getJSONObject(i);
-                    artistData = gson.fromJson(String.valueOf(artistObj), Artists.class);
-                    artistsDataList.add(i, artistData);
+    private List<Artists> retrofitRequest() {
+        LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
+        Call<List<Artists>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
+        call.enqueue(new Callback<List<Artists>>() {
+            @Override
+            public void onResponse(Call<List<Artists>> call, Response<List<Artists>> response) {
+                try {
+                    List<Artists> list = response.body();
+                    System.out.println(list);
+                    setArtists(list);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-            return artistsDataList;
-        }
 
-        @Override
-        protected void onPostExecute(List<Artists> artistsDataList) {
-            super.onPostExecute(artistsDataList);
-            setArtists(artistsDataList);
-        }
+            }
+
+            @Override
+            public void onFailure(Call<List<Artists>> call, Throwable t) {
+                Log.e(TAG,"Error ;(");
+            }
+        });
+
+        return artistsDataList;
     }
 
-    public static void setArtists(List<Artists> artistData){
+    private void setArtists(List<Artists> artistData){
         artistsAdapter.setItems(artistData);
     }
 
