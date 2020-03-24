@@ -1,14 +1,14 @@
 package com.example.lastfm;
 
-public class Artists {
-    Artists() {
+public class Artist {
+    Artist() {
     }
 
     private String name;
     private String playcount;
 
 
-    public Artists(String name, String playCount) {
+    public Artist(String name, String playCount) {
         this.name = name;
         this.playcount = playCount;
     }

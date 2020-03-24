@@ -18,9 +18,9 @@ class ArtistsViewHolder extends RecyclerView.ViewHolder  {
         tvPlayCount = itemView.findViewById(R.id.artist_playcount);
     }
 
-    public void bind(Artists artists) {
-        tvName.setText(artists.getArtistName());
-        tvPlayCount.setText(artists.getPlayCount());
+    public void bind(Artist artist) {
+        tvName.setText(artist.getArtistName());
+        tvPlayCount.setText(artist.getPlayCount());
 //            String newsPhotoUrl = artists.getImage();
 //            Picasso.get().load(newsPhotoUrl).into(ivImage);
 //

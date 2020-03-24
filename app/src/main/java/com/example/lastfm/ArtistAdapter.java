@@ -13,9 +13,9 @@ import java.util.ArrayList;
 
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistsViewHolder> {
 
-    private List<Artists> list = new ArrayList<>();
+    private List<Artist> list = new ArrayList<>();
 
-    public void setItems(List<Artists> artists){
+    public void setItems(List<Artist> artists){
         list.addAll(artists);
         notifyDataSetChanged();
     }

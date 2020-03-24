@@ -5,12 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
-
-import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,9 +16,9 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
     public static final Integer NUMBER_OF_ARTISTS = 40;
-    private static final String PARSER_PARAM = "artists";
+    public static final String PARSER_PARAM = "artists";
     private final String TAG = "Retrofit Error tracking";
-    public static List<Artists> artistsDataList = new ArrayList<>();
+    public static List<Artist> artistsDataList = new ArrayList<>();
 
     ArtistAdapter artistsAdapter = new ArtistAdapter();
 
@@ -31,32 +29,29 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
         retrofitRequest();
     }
-    private List<Artists> retrofitRequest() {
+    private void retrofitRequest() {
         LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-        Call<List<Artists>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
-        call.enqueue(new Callback<List<Artists>>() {
+        Call<List<Artist>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
+        call.enqueue(new Callback<List<Artist>>() {
             @Override
-            public void onResponse(Call<List<Artists>> call, Response<List<Artists>> response) {
+            public void onResponse(Call<List<Artist>> call, Response<List<Artist>> response) {
                 try {
-                    List<Artists> list = response.body();
-                    System.out.println(list);
-                    setArtists(list);
+                    List<Artist> list = response.body();
+                    artistsDataList =  list;
+                    setArtists(artistsDataList);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
-            public void onFailure(Call<List<Artists>> call, Throwable t) {
-                Log.e(TAG,"Error ;(");
+            public void onFailure(Call<List<Artist>> call, Throwable t) {
+                t.printStackTrace();
             }
         });
-
-        return artistsDataList;
     }
 
-    private void setArtists(List<Artists> artistData){
+    private void setArtists(List<Artist> artistData){
         artistsAdapter.setItems(artistData);
     }
 
