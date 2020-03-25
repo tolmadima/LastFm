@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private void retrofitRequest() {
         LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
         Observable<List<Artist>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
-
         Subscriber mySubscriber = new Subscriber(){
             @Override
             public void onCompleted(){
@@ -48,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+        call.subscribe(mySubscriber);
 //        call.enqueue(new Callback<List<Artist>>() {
 //            @Override
 //            public void onResponse(Call<List<Artist>> call, Response<List<Artist>> response) {
