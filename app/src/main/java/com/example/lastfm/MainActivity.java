@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.List;
+import io.reactivex.Observable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,11 +37,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Artist>> call, Response<List<Artist>> response) {
                 try {
-                    List<Artist> list = response.body();
-                    artistsDataList =  list;
+                    artistsDataList = response.body();
                     setArtists(artistsDataList);
                 } catch (Exception e) {
+
                     e.printStackTrace();
+
                 }
             }
 
