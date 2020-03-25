@@ -36,15 +36,5 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/item_margin" />
 
-    <Button
-        android:id="@+id/next_screen_button"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:text="Open"
-        android:layout_below="@+id/artist_playcount"
-        android:layout_alignStart="@id/artist_playcount"
-        android:layout_marginStart="@dimen/button_padding_start"
-        android:layout_marginTop="@dimen/button_padding_top"
-        />
 
 </RelativeLayout>
