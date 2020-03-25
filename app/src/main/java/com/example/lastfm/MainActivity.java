@@ -32,25 +32,40 @@ public class MainActivity extends AppCompatActivity {
     }
     private void retrofitRequest() {
         LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-        Call<List<Artist>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
-        call.enqueue(new Callback<List<Artist>>() {
+        Observable<List<Artist>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
+
+        Subscriber mySubscriber = new Subscriber(){
             @Override
-            public void onResponse(Call<List<Artist>> call, Response<List<Artist>> response) {
-                try {
-                    artistsDataList = response.body();
-                    setArtists(artistsDataList);
-                } catch (Exception e) {
+            public void onCompleted(){
 
-                    e.printStackTrace();
-
-                }
             }
-
             @Override
-            public void onFailure(Call<List<Artist>> call, Throwable t) {
-                t.printStackTrace();
+            public void onError(){
+
             }
-        });
+            @Override
+            public void onNext(){
+
+            }
+        }
+//        call.enqueue(new Callback<List<Artist>>() {
+//            @Override
+//            public void onResponse(Call<List<Artist>> call, Response<List<Artist>> response) {
+//                try {
+//                    artistsDataList = response.body();
+//                    setArtists(artistsDataList);
+//                } catch (Exception e) {
+//
+//                    e.printStackTrace();
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Artist>> call, Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
     }
 
     private void setArtists(List<Artist> artistData){
