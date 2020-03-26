@@ -5,21 +5,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 import io.reactivex.Observable;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity {
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
     public static final Integer NUMBER_OF_ARTISTS = 40;
     public static final String PARSER_PARAM = "artists";
     private final String TAG = "Retrofit Error tracking";
-    public static List<Artist> artistsDataList = new ArrayList<>();
+    public static List<Artist> requestedArtists = new ArrayList<>();
 
     ArtistAdapter artistsAdapter = new ArtistAdapter();
 
@@ -31,45 +31,46 @@ public class MainActivity extends AppCompatActivity {
         retrofitRequest();
     }
     private void retrofitRequest() {
-        LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-        Observable<List<Artist>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
-        Subscriber mySubscriber = new Subscriber(){
-            @Override
-            public void onCompleted(){
+        Thread thread = new Thread(new Runnable() {
 
-            }
             @Override
-            public void onError(){
+            public void run() {
+                try  {
+                    LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
+                    Observable<List<Artist>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
+                    call.subscribe(new Observer<List<Artist>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-            }
-            @Override
-            public void onNext(){
+                        }
 
+                        @Override
+                        public void onNext(List<Artist> value) {
+                            requestedArtists = value;
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            Log.i("Rx", "request is finished");
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }
-        call.subscribe(mySubscriber);
-//        call.enqueue(new Callback<List<Artist>>() {
-//            @Override
-//            public void onResponse(Call<List<Artist>> call, Response<List<Artist>> response) {
-//                try {
-//                    artistsDataList = response.body();
-//                    setArtists(artistsDataList);
-//                } catch (Exception e) {
-//
-//                    e.printStackTrace();
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Artist>> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
+        });
+        thread.start();
+        Log.e("Empty", String.valueOf(requestedArtists));
+        setArtists(requestedArtists);
     }
 
-    private void setArtists(List<Artist> artistData){
-        artistsAdapter.setItems(artistData);
+    private void setArtists(List<Artist> requestedArtists){
+        artistsAdapter.setItems(requestedArtists);
     }
 
     private void initRecyclerView() {
