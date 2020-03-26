@@ -13,6 +13,7 @@ import io.reactivex.Observable;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
@@ -31,13 +32,8 @@ public class MainActivity extends AppCompatActivity {
         retrofitRequest();
     }
     private void retrofitRequest() {
-        Thread thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try  {
                     LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-                    Observable<List<Artist>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json");
+                    Observable<List<Artist>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json").subscribeOn(Schedulers.computation());
                     call.subscribe(new Observer<List<Artist>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
@@ -58,14 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete() {
                             Log.i("Rx", "request is finished");
                         }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-        Log.e("Empty", String.valueOf(requestedArtists));
+    });
         setArtists(requestedArtists);
     }
 
