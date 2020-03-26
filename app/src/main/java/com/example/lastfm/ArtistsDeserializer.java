@@ -26,7 +26,6 @@ public class ArtistsDeserializer implements JsonDeserializer<List<Artist>>
     @Override
     public List<Artist> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {
-        Log.e("Des","Working");
             JsonObject jsonObject = json.getAsJsonObject();
             List<Artist> parsedArtists = new ArrayList<>();
             Artist artistData;

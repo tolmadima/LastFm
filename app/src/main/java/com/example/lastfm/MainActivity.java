@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onNext(List<Artist> value) {
                             requestedArtists = value;
+                            setArtists(value);
+                            System.out.println("data setted");
                         }
 
                         @Override
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.i("Rx", "request is finished");
                         }
     });
-        setArtists(requestedArtists);
     }
 
     private void setArtists(List<Artist> requestedArtists){
