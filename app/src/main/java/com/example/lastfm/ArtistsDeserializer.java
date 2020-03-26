@@ -17,16 +17,16 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 
 import static com.example.lastfm.MainActivity.NUMBER_OF_ARTISTS;
-import static com.example.lastfm.MainActivity.artistsDataList;
+import static com.example.lastfm.MainActivity.requestedArtists;
 
-public class ArtistsDeserializer implements JsonDeserializer<Artists>
+public class ArtistsDeserializer implements JsonDeserializer<Artist>
 {
     @Override
-    public Artists deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+    public Artist deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {
         Log.e("Des","Working");
             JsonObject jsonObject = json.getAsJsonObject();
-            Artists parsedArtist = new Artists();
+            Artist parsedArtist = new Artist();
         try{
                 Gson gson = new Gson();
                 JsonObject parsing = jsonObject.getAsJsonObject("artists");
@@ -36,7 +36,7 @@ public class ArtistsDeserializer implements JsonDeserializer<Artists>
                     JSONObject data = artistJson.getJSONObject(i);
                     parsedArtist.setArtistName(data.getString("name"));
                     parsedArtist.setPlayCount(data.getString("playcount"));
-                    artistsDataList.set(i, parsedArtist);
+                    requestedArtists.set(i, parsedArtist);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

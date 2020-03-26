@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +17,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnArtistListener {
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
     public static final Integer NUMBER_OF_ARTISTS = 40;
     private static final String REQUEST_TYPE = "json";
     private static final String PARSER_PARAM = "artists";
     private final String TAG = "Retrofit Error tracking";
-    public static List<Artists> artistsDataList = new ArrayList<>();
+    public static List<Artist> requestedArtists = new ArrayList<>();
 
     ArtistAdapter artistsAdapter = new ArtistAdapter();
 
@@ -48,14 +47,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private List<Artists> retrofitRequest() {
+    private List<Artist> retrofitRequest() {
         LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-        Call<List<Artists>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, REQUEST_TYPE);
-        call.enqueue(new Callback<List<Artists>>() {
+        Call<List<Artist>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, REQUEST_TYPE);
+        call.enqueue(new Callback<List<Artist>>() {
             @Override
-            public void onResponse(Call<List<Artists>> call, Response<List<Artists>> response) {
+            public void onResponse(Call<List<Artist>> call, Response<List<Artist>> response) {
                 try {
-                    List<Artists> list = response.body();
+                    List<Artist> list = response.body();
                     System.out.println(list);
                     setArtists(list);
                 } catch (Exception e) {
@@ -65,15 +64,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Artists>> call, Throwable t) {
+            public void onFailure(Call<List<Artist>> call, Throwable t) {
                 Log.e(TAG,"Error ;(");
             }
         });
 
-        return artistsDataList;
+        return requestedArtists;
     }
 
-    private void setArtists(List<Artists> artistData){
+    private void setArtists(List<Artist> artistData){
         artistsAdapter.setItems(artistData);
     }
 
@@ -82,5 +81,10 @@ public class MainActivity extends AppCompatActivity {
         artistsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         artistsAdapter = new ArtistAdapter();
         artistsRecyclerView.setAdapter(artistsAdapter);
+    }
+
+    @Override
+    public void onArtistClick(int position) {
+        Log.i("Click", String.valueOf(position));
     }
 }
