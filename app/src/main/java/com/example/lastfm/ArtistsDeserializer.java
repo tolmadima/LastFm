@@ -24,7 +24,7 @@ public class ArtistsDeserializer implements JsonDeserializer<Artists>
     @Override
     public Artists deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {
-        Log.e("Des","Rabotaet");
+        Log.e("Des","Working");
             JsonObject jsonObject = json.getAsJsonObject();
             Artists parsedArtist = new Artists();
         try{
