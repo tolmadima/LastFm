@@ -34,8 +34,8 @@ public class ServiceGenerator {
             new OkHttpClient.Builder();
 
     private  static Retrofit.Builder builder = new Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
     private static HttpLoggingInterceptor logging =
@@ -49,7 +49,6 @@ public class ServiceGenerator {
         if (!httpClient.interceptors().contains(logging)){
             httpClient.addInterceptor(logging);
             builder.client(httpClient.build());
-
             retrofit = builder.build();
         }
         Log.i(TAG, "return");
