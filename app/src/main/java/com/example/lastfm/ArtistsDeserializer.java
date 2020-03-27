@@ -15,33 +15,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.lastfm.MainActivity.NUMBER_OF_ARTISTS;
-import static com.example.lastfm.MainActivity.artistsDataList;
+import static com.example.lastfm.MainActivity.PARSER_PARAM;
 
-public class ArtistsDeserializer implements JsonDeserializer<Artists>
+public class ArtistsDeserializer implements JsonDeserializer<List<Artist>>
 {
     @Override
-    public Artists deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+    public List<Artist> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {
-        Log.e("Des","Rabotaet");
             JsonObject jsonObject = json.getAsJsonObject();
-            Artists parsedArtist = new Artists();
+            List<Artist> parsedArtists = new ArrayList<>();
+            Artist artistData;
         try{
                 Gson gson = new Gson();
-                JsonObject parsing = jsonObject.getAsJsonObject("artists");
+                JsonObject parsing = jsonObject.getAsJsonObject(PARSER_PARAM);
                 JsonArray artist = parsing.getAsJsonArray("artist");
                 JSONArray artistJson = new JSONArray(gson.toJson(artist));
                 for (int i = 0; i < NUMBER_OF_ARTISTS; i++) {
                     JSONObject data = artistJson.getJSONObject(i);
-                    parsedArtist.setArtistName(data.getString("name"));
-                    parsedArtist.setPlayCount(data.getString("playcount"));
-                    artistsDataList.set(i, parsedArtist);
+                    artistData = gson.fromJson(String.valueOf(data), Artist.class);
+                    parsedArtists.add(i, artistData);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            return parsedArtist;
+            return parsedArtists;
         }
     }

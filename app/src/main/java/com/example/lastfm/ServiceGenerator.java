@@ -1,21 +1,17 @@
 package com.example.lastfm;
 
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,9 +21,10 @@ public class ServiceGenerator {
     private static final String TAG = "Retrofit";
 
     private static final String BASE_URL = "http://ws.audioscrobbler.com/2.0/";
+    private static Type artistType = new TypeToken<List<Artist>>(){}.getType();
 
     private static Gson gson = new GsonBuilder()
-            .registerTypeAdapter(Artists.class, new ArtistsDeserializer())
+            .registerTypeAdapter(artistType, new ArtistsDeserializer())
             .create();
 
     private static OkHttpClient.Builder httpClient =
@@ -51,7 +48,6 @@ public class ServiceGenerator {
             builder.client(httpClient.build());
             retrofit = builder.build();
         }
-        Log.i(TAG, "return");
         return retrofit.create(serviceClass);
     }
 }
