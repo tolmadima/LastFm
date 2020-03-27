@@ -12,8 +12,12 @@ import java.util.List;
 import io.reactivex.Observable;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
@@ -31,20 +35,25 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
         retrofitRequest();
     }
+
+
     private void retrofitRequest() {
-                    LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-                    Observable<List<Artist>> call = lastFMClient.numberArtists(NUMBER_OF_ARTISTS, APP_ID, "json").subscribeOn(Schedulers.computation());
+        Log.e("Thread", Thread.currentThread().getName());
+        LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
+                    Observable<List<Artist>> call = lastFMClient.getArtists(NUMBER_OF_ARTISTS, APP_ID, "json").subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());
                     call.subscribe(new Observer<List<Artist>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-
+    
                         }
 
                         @Override
                         public void onNext(List<Artist> value) {
+                            Log.e("Thread", Thread.currentThread().getName());
                             requestedArtists = value;
-                            setArtists(value);
+                            setArtists(requestedArtists);
                             System.out.println("data setted");
+
                         }
 
                         @Override
@@ -70,3 +79,6 @@ public class MainActivity extends AppCompatActivity {
         artistsRecyclerView.setAdapter(artistsAdapter);
     }
 }
+
+//Vse chto ne sdelal
+//Trello

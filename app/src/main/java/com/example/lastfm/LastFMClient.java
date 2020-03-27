@@ -10,7 +10,7 @@ import retrofit2.http.Query;
 public interface LastFMClient {
 
     @GET("?method=chart.gettopartists")
-    Observable<List<Artist>> numberArtists(@Query("limit")int numberArtists, @Query("api_key")String key, @Query("format")String format);
+    Observable<List<Artist>> getArtists(@Query("limit")int numberArtists, @Query("api_key")String key, @Query("format")String format);
 }
 
 
