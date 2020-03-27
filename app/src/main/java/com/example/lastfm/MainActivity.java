@@ -17,6 +17,8 @@ import java.util.List;
 import io.reactivex.Observable;
 
 import io.reactivex.Observer;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -45,32 +47,25 @@ public class MainActivity extends AppCompatActivity {
     private void retrofitRequest() {
         Log.e("Thread", Thread.currentThread().getName());
         LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-                    Observable<List<Artist>> call = lastFMClient.getArtists(NUMBER_OF_ARTISTS, APP_ID, "json").subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());
-                    call.subscribe(new Observer<List<Artist>>() {
+                    Single<List<Artist>> call = lastFMClient.getArtists(NUMBER_OF_ARTISTS, APP_ID, "json").subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());
+                    call.subscribe(new SingleObserver<List<Artist>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-    
                         }
 
                         @Override
-                        public void onNext(List<Artist> value) {
+                        public void onSuccess(List<Artist> value) {
                             Log.e("Thread", Thread.currentThread().getName());
                             requestedArtists = value;
                             setArtists(requestedArtists);
                             System.out.println("data setted");
-
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
                         }
-
-                        @Override
-                        public void onComplete() {
-                            Log.i("Rx", "request is finished");
-                        }
-    });
+                    });
     }
 
     private void setArtists(List<Artist> requestedArtists){
