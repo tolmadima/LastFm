@@ -3,10 +3,15 @@ package com.example.lastfm;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
-
+import com.google.gson.JsonObject;
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import java.util.ArrayList;
 import java.util.List;
 import io.reactivex.Observable;
