@@ -97,6 +97,3 @@ public class MainActivity extends AppCompatActivity {
         artistsRecyclerView.setAdapter(artistsAdapter);
     }
 }
-
-//Vse chto ne sdelal
-//Trello
