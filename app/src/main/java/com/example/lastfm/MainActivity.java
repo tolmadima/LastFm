@@ -3,6 +3,8 @@ package com.example.lastfm;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import com.google.gson.JsonObject;
@@ -10,6 +12,9 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import java.util.ArrayList;
@@ -43,6 +48,19 @@ public class MainActivity extends AppCompatActivity {
         retrofitRequest();
     }
 
+    final Button button = findViewById(R.id.next_screen_button);
+        button.setOnClickListener(new View.OnClickListener() {
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.next_screen_button:
+                    Intent intent = new Intent(MainActivity.this, ArtistScreen.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            }
+        }
+    });
 
     private void retrofitRequest() {
         Log.e("Thread", Thread.currentThread().getName());
