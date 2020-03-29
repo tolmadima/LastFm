@@ -28,7 +28,7 @@ class ArtistsViewHolder extends RecyclerView.ViewHolder implements View.OnClickL
     }
 
     @Override
-    public void onClick(View view) {
-        mOnArtistListener.onArtistClick(getLayoutPosition());
+    public void onClick(View v) {
+        mOnArtistListener.onArtistClick(getAdapterPosition());
     }
 }
