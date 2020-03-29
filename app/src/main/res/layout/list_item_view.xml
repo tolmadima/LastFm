@@ -16,16 +16,15 @@
 <!--        android:id="@+id/artist_image"-->
 
 <!--        />-->
-
     <TextView
-        android:id="@+id/artist_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="@dimen/item_padding"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/artist_name"
+        android:layout_marginStart="@dimen/item_margin"
+        tools:context="ExampleList"
         android:textColor="@color/font_colour"
         android:textStyle="bold"
-        tools:context="ExampleList" />
+        />
 
     <TextView
         android:id="@+id/artist_playcount"
@@ -35,6 +34,5 @@
         android:textColor="@color/font_colour"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/item_margin" />
-
 
 </RelativeLayout>
