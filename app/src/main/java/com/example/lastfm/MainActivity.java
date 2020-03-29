@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
                         @Override
                         public void onError(Throwable e) {
                             Context context = getApplicationContext();
-                            Toast.makeText(context, "Ошибка получения списка артистов", 10).show();
+                            Toast.makeText(context, "Ошибка получения списка артистов", Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
                     });
@@ -90,6 +90,10 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     @Override
     public void onArtistClick(int position) {
         Intent intent = new Intent(this,ArtistScreen.class);
+        Context context = getApplicationContext();
+        Toast.makeText(context,"position = " + position, Toast.LENGTH_LONG).show();
+        intent.putExtra("artistName",requestedArtists.get(position).getArtistName());
+        intent.putExtra("artistPlayCount",requestedArtists.get(position).getPlayCount());
         startActivity(intent);
     }
 }
