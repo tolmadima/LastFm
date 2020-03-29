@@ -12,9 +12,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistsViewHolder> {
-
     private List<Artist> list = new ArrayList<>();
-
+    private OnArtistListener mOnArtistListener;
     public void setItems(List<Artist> artists){
         list.addAll(artists);
         notifyDataSetChanged();
@@ -32,7 +31,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistsViewHolder> {
         View viewArtists = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_view, parent, false);
         Log.e("View","Created view");
-        return new ArtistsViewHolder(viewArtists);
+        return new ArtistsViewHolder(viewArtists, mOnArtistListener);
     }
 
     @Override
@@ -44,6 +43,10 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistsViewHolder> {
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public interface OnArtistListener{
+        void onArtistClick(int position);
     }
 
 }

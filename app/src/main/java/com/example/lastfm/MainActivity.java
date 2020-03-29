@@ -26,7 +26,7 @@ import io.reactivex.schedulers.Schedulers;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnArtistListener {
     private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
     public static final Integer NUMBER_OF_ARTISTS = 40;
     public static final String PARSER_PARAM = "artists";
@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
         retrofitRequest();
     }
-
 
     private void retrofitRequest() {
         Log.e("Thread", Thread.currentThread().getName());
@@ -78,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
         artistsAdapter = new ArtistAdapter();
         artistsRecyclerView.setAdapter(artistsAdapter);
     }
-}
 
-//Vse chto ne sdelal
-//Trello
+    @Override
+    public void onArtistClick(int position) {
+        Log.i("Click", String.valueOf(position));
+    }
+}
