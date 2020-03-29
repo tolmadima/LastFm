@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 import io.reactivex.Single;
@@ -66,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
 
                         @Override
                         public void onError(Throwable e) {
+                            Context context = getApplicationContext();
+                            Toast.makeText(context, "Ошибка получения списка артистов", 10).show();
                             e.printStackTrace();
                         }
                     });
