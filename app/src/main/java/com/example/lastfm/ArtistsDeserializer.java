@@ -41,5 +41,5 @@ public class ArtistsDeserializer implements JsonDeserializer<List<Artist>>
                 e.printStackTrace();
             }
             return parsedArtists;
-        }
     }
+}
