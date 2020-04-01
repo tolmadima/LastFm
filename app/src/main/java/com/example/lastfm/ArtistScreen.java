@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,22 +35,22 @@ public class ArtistScreen extends AppCompatActivity {
 
         String name = intent.getStringExtra("artistName");
 
-        LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-        Single<List> call = lastFMClient.getArtistInfo(name, APP_ID, REQUEST_TYPE).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());
-        call.subscribe(new SingleObserver<List>() {
+        LastFMClient lastFMClient = ServiceGenerator.createInfoService(LastFMClient.class);
+        Single<List<ArtistInfo>> call = lastFMClient.getArtistInfo(name, "b4ab3bf82dcb495e182e04cfc1f12b7b", REQUEST_TYPE).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());
+        call.subscribe(new SingleObserver<List<ArtistInfo>>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onSuccess(List value) {
-
+            public void onSuccess(List<ArtistInfo> value) {
+                Log.i("New Activ", String.valueOf(value));
             }
 
             @Override
             public void onError(Throwable e) {
-
+                e.printStackTrace();
             }
         });
     }

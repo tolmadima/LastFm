@@ -31,6 +31,11 @@ public class ServiceGenerator {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
+    private  static Retrofit.Builder builderInfo = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+
     private static HttpLoggingInterceptor logging =
             new HttpLoggingInterceptor()
                     .setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -45,6 +50,17 @@ public class ServiceGenerator {
             retrofit = builder.build();
         }
         return retrofit.create(serviceClass);
+    }
+
+    private static Retrofit retrofitInfo = builderInfo.build();
+
+    public static <S> S createInfoService(Class<S> serviceClass) {
+        if (!httpClient.interceptors().contains(logging)){
+            httpClient.addInterceptor(logging);
+            builderInfo.client(httpClient.build());
+            retrofitInfo = builderInfo.build();
+        }
+        return retrofitInfo.create(serviceClass);
     }
 }
 

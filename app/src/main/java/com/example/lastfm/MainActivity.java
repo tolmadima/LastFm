@@ -21,10 +21,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnArtistListener {
-    private static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
+    public static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
     public static final Integer NUMBER_OF_ARTISTS = 40;
     public static final String PARSER_PARAM = "artists";
-    private static final String REQUEST_TYPE = "json";
+    public static final String REQUEST_TYPE = "json";
     public static List<Artist> requestedArtists = new ArrayList<>();
 
     ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
