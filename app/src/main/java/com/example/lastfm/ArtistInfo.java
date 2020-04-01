@@ -2,8 +2,7 @@ package com.example.lastfm;
 
 import java.util.ArrayList;
 
-class ArtistInfo {
-    class ArtistData {
+    class ArtistInfo {
         Artist ArtistObject;
 
         public Artist getArtist() {
@@ -15,7 +14,7 @@ class ArtistInfo {
         }
     }
 
-    public class Artist {
+    class ArtistData {
         private String name;
         private String mbid;
         private String url;
@@ -196,4 +195,3 @@ class ArtistInfo {
             this.playcount = playcount;
         }
     }
-}

@@ -35,17 +35,21 @@ public class ArtistScreen extends AppCompatActivity {
 
         String name = intent.getStringExtra("artistName");
 
-        LastFMClient lastFMClient = ServiceGenerator.createInfoService(LastFMClient.class);
-        Single<List<ArtistInfo>> call = lastFMClient.getArtistInfo(name, "b4ab3bf82dcb495e182e04cfc1f12b7b", REQUEST_TYPE).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());
-        call.subscribe(new SingleObserver<List<ArtistInfo>>() {
+        LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
+        Single<ArtistInfo> call = lastFMClient.getArtistInfo(name, "b4ab3bf82dcb495e182e04cfc1f12b7b", REQUEST_TYPE).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());
+        call.subscribe(new SingleObserver<ArtistInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                d.dispose();
             }
 
             @Override
-            public void onSuccess(List<ArtistInfo> value) {
-                Log.i("New Activ", String.valueOf(value));
+            public void onSuccess(ArtistInfo value) {
+                Artist artistInfo = value.getArtist();
+                String artistName = artistInfo.getArtistName();
+                tvNameView.setText(artistName);
+                String playCount = artistInfo.getPlayCount();
+                tvPlayCount.setText(playCount);
             }
 
             @Override

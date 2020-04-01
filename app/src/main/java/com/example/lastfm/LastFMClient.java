@@ -13,7 +13,7 @@ public interface LastFMClient {
     @GET("?method=chart.gettopartists")
     Single<List<Artist>> getArtists(@Query("limit")int numberArtists, @Query("api_key")String key, @Query("format")String format);
     @GET("?method=artist.getinfo")
-    Single<List<ArtistInfo>> getArtistInfo(@Query("artist")String name,@Query("api_key")String key,@Query("format")String format);
+    Single<ArtistInfo> getArtistInfo(@Query("artist")String name,@Query("api_key")String key,@Query("format")String format);
 }
 
 
