@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.jar.Attributes;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -42,11 +43,12 @@ public class ArtistScreen extends AppCompatActivity {
 
             @Override
             public void onSuccess(ArtistInfo value) {
-                Artist artistInfo = value.getArtist();
-                String artistName = artistInfo.getArtistName();
-                tvNameView.setText(artistName);
-                String playCount = artistInfo.getPlayCount();
-                tvPlayCount.setText(playCount);
+                System.out.println("value = " + String.valueOf(value));
+                System.out.println("getArtists = " + String.valueOf(value.getArtists()));
+                System.out.println("getArtist = " + String.valueOf(value.getArtists().getArtist()));
+//                Artist info = value.getArtist();
+//                String artist = info.getArtistName();
+//                Log.e("", String.valueOf(info));
             }
 
             @Override
