@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +64,7 @@ public class ArtistScreen extends AppCompatActivity {
                 tvArtistBio.setText(bio);
                 tvPlayCount.setText(playcount);
                 Picasso.get().load(imageUrl).into(artistImage);
+                artistImage.setVisibility(imageUrl != null ? View.VISIBLE : View.GONE);
             }
 
             @Override
