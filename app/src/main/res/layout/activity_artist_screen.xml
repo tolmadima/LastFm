@@ -40,4 +40,12 @@
         android:layout_marginTop="@dimen/item_margin"
         />
 
+    <TextView
+        android:id="@+id/big_artist_bio"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/big_artist_playcount"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/item_margin"
+        />
 </RelativeLayout>

@@ -2,11 +2,15 @@ package com.example.lastfm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.jar.Attributes;
@@ -25,6 +29,7 @@ public class ArtistScreen extends AppCompatActivity {
     TextView tvNameView;
     TextView tvPlayCount;
     ImageView artistImage;
+    TextView tvArtistBio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,8 @@ public class ArtistScreen extends AppCompatActivity {
         setContentView(R.layout.activity_artist_screen);
         tvNameView = findViewById(R.id.big_artist_name);
         tvPlayCount = findViewById(R.id.big_artist_playcount);
+        artistImage = findViewById(R.id.big_artist_image);
+        tvArtistBio = findViewById(R.id.big_artist_bio);
         Intent intent = getIntent();
         String name = intent.getStringExtra("artistName");
         LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
@@ -43,17 +50,26 @@ public class ArtistScreen extends AppCompatActivity {
 
             @Override
             public void onSuccess(ArtistInfo value) {
-                System.out.println("value = " + String.valueOf(value));
-                System.out.println("getArtists = " + String.valueOf(value.getArtists()));
-                System.out.println("getArtist = " + String.valueOf(value.getArtists().getArtist()));
-//                Artist info = value.getArtist();
-//                String artist = info.getArtistName();
-//                Log.e("", String.valueOf(info));
+                ArtistData info = value.getArtist();
+                String artistName = info.getName();
+                Bio artistBio = info.getBio();
+                Stats artistStat = info.getStats();
+                String playcount = artistStat.getPlaycount();
+                String bio = artistBio.getContent();
+                Image url = info.getImage().get(3);
+                String imageUrl = url.getText();
+                System.out.println(imageUrl);
+                tvNameView.setText(artistName);
+                tvArtistBio.setText(bio);
+                tvPlayCount.setText(playcount);
+                Picasso.get().load(imageUrl).into(artistImage);
             }
 
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
+                Context context = getApplicationContext();
+                Toast.makeText(context, "Ошибка получения артиста", Toast.LENGTH_LONG).show();
             }
         });
     }
