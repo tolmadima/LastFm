@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".ArtistScreen">
 
-        <ImageView
-            android:layout_height="@dimen/image_size"
-            android:layout_width="@dimen/image_size"
-            android:scaleType="centerCrop"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/big_artist_image"
-            />
+    <ImageView
+        android:layout_height="@dimen/image_size"
+        android:layout_width="@dimen/image_size"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/big_artist_image"
+        />
 
     <TextView
         android:id="@+id/big_artist_name"

@@ -51,9 +51,11 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     }
 
     private void retrofitRequest() {
-        Log.e("Thread", Thread.currentThread().getName());
         LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-                    Single<List<Artist>> call = lastFMClient.getArtists(NUMBER_OF_ARTISTS, APP_ID, REQUEST_TYPE).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());
+                    Single<List<Artist>> call = lastFMClient
+                            .getArtists(NUMBER_OF_ARTISTS, APP_ID, REQUEST_TYPE)
+                            .subscribeOn(Schedulers.computation())
+                            .observeOn(AndroidSchedulers.mainThread());
                     call.subscribe(new SingleObserver<List<Artist>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
@@ -61,17 +63,14 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
 
                         @Override
                         public void onSuccess(List<Artist> value) {
-                            Log.e("Thread", Thread.currentThread().getName());
                             requestedArtists = value;
                             setArtists(requestedArtists);
-                            System.out.println("data setted");
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Context context = getApplicationContext();
                             Toast.makeText(context, "Ошибка получения списка артистов", Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
                         }
                     });
     }

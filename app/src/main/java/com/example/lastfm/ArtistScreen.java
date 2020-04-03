@@ -27,23 +27,22 @@ import static com.example.lastfm.MainActivity.REQUEST_TYPE;
 
 public class ArtistScreen extends AppCompatActivity {
 
-    TextView tvNameView;
-    TextView tvPlayCount;
-    ImageView artistImage;
-    TextView tvArtistBio;
+    TextView tvNameView = findViewById(R.id.big_artist_name);
+    TextView tvPlayCount = findViewById(R.id.big_artist_playcount);
+    ImageView artistImage = findViewById(R.id.big_artist_image);
+    TextView tvArtistBio = findViewById(R.id.big_artist_bio);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artist_screen);
-        tvNameView = findViewById(R.id.big_artist_name);
-        tvPlayCount = findViewById(R.id.big_artist_playcount);
-        artistImage = findViewById(R.id.big_artist_image);
-        tvArtistBio = findViewById(R.id.big_artist_bio);
         Intent intent = getIntent();
         String name = intent.getStringExtra("artistName");
         LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-        Single<ArtistInfo> call = lastFMClient.getArtistInfo(name, "b4ab3bf82dcb495e182e04cfc1f12b7b", REQUEST_TYPE).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());
+        Single<ArtistInfo> call = lastFMClient
+                .getArtistInfo(name, "b4ab3bf82dcb495e182e04cfc1f12b7b", REQUEST_TYPE)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
         call.subscribe(new SingleObserver<ArtistInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -59,20 +58,22 @@ public class ArtistScreen extends AppCompatActivity {
                 String bio = artistBio.getContent();
                 Image url = info.getImage().get(3);
                 String imageUrl = url.getText();
-                System.out.println(imageUrl);
-                tvNameView.setText(artistName);
-                tvArtistBio.setText(bio);
-                tvPlayCount.setText(playcount);
-                Picasso.get().load(imageUrl).into(artistImage);
-                artistImage.setVisibility(imageUrl != null ? View.VISIBLE : View.GONE);
+                loadArtist(artistName,playcount,bio,imageUrl);
             }
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
                 Context context = getApplicationContext();
                 Toast.makeText(context, "Ошибка получения артиста", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void loadArtist(String name, String bio, String playcount, String imageUrl){
+        tvNameView.setText(name);
+        tvArtistBio.setText(bio);
+        tvPlayCount.setText(playcount);
+        Picasso.get().load(imageUrl).into(artistImage);
+        artistImage.setVisibility(imageUrl != null ? View.VISIBLE : View.GONE);
     }
 }
