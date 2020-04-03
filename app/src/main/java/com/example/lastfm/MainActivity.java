@@ -3,9 +3,11 @@ package com.example.lastfm;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,12 +26,13 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     private static final String REQUEST_TYPE = "json";
     public static List<Artist> requestedArtists = new ArrayList<>();
 
-    ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
+    ArtistAdapter artistsAdapter = new ArtistAdapter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_items);
         initRecyclerView();
         retrofitRequest();
         final Button button = findViewById(R.id.next_screen_button);
@@ -43,6 +46,12 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
                     default:
                         break;
                 }
+            }
+        });
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                retrofitRequest();
             }
         });
     }
