@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_items);
+        SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
         initRecyclerView();
         retrofitRequest();
         final Button button = findViewById(R.id.next_screen_button);
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                retrofitRequest();
+//                retrofitRequest();
             }
         });
     }
