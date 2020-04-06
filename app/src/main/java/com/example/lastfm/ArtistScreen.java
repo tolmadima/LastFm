@@ -26,22 +26,26 @@ import static android.provider.UserDictionary.Words.APP_ID;
 import static com.example.lastfm.MainActivity.REQUEST_TYPE;
 
 public class ArtistScreen extends AppCompatActivity {
-
-    TextView tvNameView = findViewById(R.id.big_artist_name);
-    TextView tvPlayCount = findViewById(R.id.big_artist_playcount);
-    ImageView artistImage = findViewById(R.id.big_artist_image);
-    TextView tvArtistBio = findViewById(R.id.big_artist_bio);
-
+    Context context;
+    private TextView tvNameView;
+    private TextView tvPlayCount;
+    private ImageView artistImage;
+    private TextView tvArtistBio;
+    private String toastError = "Ошибка получения артиста";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artist_screen);
-        Intent intent = getIntent();
-        String name = intent.getStringExtra("artistName");
-        LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-        Single<ArtistInfo> call = lastFMClient
+         tvNameView = findViewById(R.id.big_artist_name);
+         tvPlayCount = findViewById(R.id.big_artist_playcount);
+         artistImage = findViewById(R.id.big_artist_image);
+         tvArtistBio = findViewById(R.id.big_artist_bio);
+         Intent intent = getIntent();
+         String name = intent.getStringExtra("artistName");
+         LastFMClient client = MainActivity.generateServiceSingleton.getLastFMClient();
+         Single<ArtistInfo> call = client
                 .getArtistInfo(name, "b4ab3bf82dcb495e182e04cfc1f12b7b", REQUEST_TYPE)
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         call.subscribe(new SingleObserver<ArtistInfo>() {
             @Override
@@ -63,8 +67,8 @@ public class ArtistScreen extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Context context = getApplicationContext();
-                Toast.makeText(context, "Ошибка получения артиста", Toast.LENGTH_LONG).show();
+
+                Toast.makeText(context, toastError, Toast.LENGTH_LONG).show();
             }
         });
     }

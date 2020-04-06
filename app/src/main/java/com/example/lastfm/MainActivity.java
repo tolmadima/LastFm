@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import io.reactivex.Single;
@@ -26,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     public static final String PARSER_PARAM = "artists";
     public static final String REQUEST_TYPE = "json";
     public static List<Artist> requestedArtists = new ArrayList<>();
+    private String toastError = "Ошибка получения списка артистов";
+    Context context;
 
     ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
 
@@ -51,10 +56,10 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     }
 
     private void retrofitRequest() {
-        LastFMClient lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-                    Single<List<Artist>> call = lastFMClient
+        LastFMClient client = generateServiceSingleton.getLastFMClient();
+                    Single<List<Artist>> call = client
                             .getArtists(NUMBER_OF_ARTISTS, APP_ID, REQUEST_TYPE)
-                            .subscribeOn(Schedulers.computation())
+                            .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread());
                     call.subscribe(new SingleObserver<List<Artist>>() {
                         @Override
@@ -69,8 +74,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
 
                         @Override
                         public void onError(Throwable e) {
-                            Context context = getApplicationContext();
-                            Toast.makeText(context, "Ошибка получения списка артистов", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, toastError, Toast.LENGTH_LONG).show();
                         }
                     });
     }
@@ -92,7 +96,16 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         Context context = getApplicationContext();
         Toast.makeText(context,"position = " + position, Toast.LENGTH_LONG).show();
         intent.putExtra("artistName",requestedArtists.get(position).getArtistName());
-        intent.putExtra("artistPlayCount",requestedArtists.get(position).getPlayCount());
         startActivity(intent);
+    }
+
+    public static final class generateServiceSingleton {
+        private static LastFMClient lastFMClient;
+        public static LastFMClient getLastFMClient(){
+            if (lastFMClient == null) {
+            lastFMClient = ServiceGenerator.createService(LastFMClient.class);
+            }
+            return lastFMClient;
+        }
     }
 }
