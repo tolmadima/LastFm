@@ -3,14 +3,12 @@ package com.example.lastfm;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 import io.reactivex.Single;
@@ -76,11 +74,11 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     }
 
     private void setArtists(List<Artist> requestedArtists){
-        artistsAdapter.setItems(requestedArtists);
+        artistsAdapter.addItems(requestedArtists);
     }
 
     private void initRecyclerView() {
-        RecyclerView rvArtists = findViewById(R.id.artistsRecyclerView);
+        RecyclerView rvArtists = findViewById(R.id.rvArtists);
         rvArtists.setLayoutManager(new LinearLayoutManager(this));
         artistsAdapter = new ArtistAdapter(this);
         rvArtists.setAdapter(artistsAdapter);

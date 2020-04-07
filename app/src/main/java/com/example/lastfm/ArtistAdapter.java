@@ -17,7 +17,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistsViewHolder> {
     private List<Artist> list = new ArrayList<>();
     private OnArtistListener mOnArtistListener;
 
-    public void setItems(List<Artist> artists){
+    public void addItems(List<Artist> artists){
         list.addAll(artists);
         notifyDataSetChanged();
     }
