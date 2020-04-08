@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     }
 
     private void initRecyclerView() {
-        RecyclerView artistsRecyclerView = findViewById(R.id.artistsRecyclerView);
+        RecyclerView artistsRecyclerView = findViewById(R.id.rv_artists);
         artistsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         artistsAdapter = new ArtistAdapter(this);
         artistsRecyclerView.setAdapter(artistsAdapter);
