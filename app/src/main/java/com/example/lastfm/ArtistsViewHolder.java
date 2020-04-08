@@ -10,7 +10,7 @@ class ArtistsViewHolder extends RecyclerView.ViewHolder implements View.OnClickL
     private TextView tvName;
     private TextView tvPlayCount;
     private ImageView ivImage;
-    ArtistAdapter.OnArtistListener mOnArtistListener;
+    private ArtistAdapter.OnArtistListener mOnArtistListener;
 
     public ArtistsViewHolder(View itemView, ArtistAdapter.OnArtistListener onArtistListener){
         super (itemView);
