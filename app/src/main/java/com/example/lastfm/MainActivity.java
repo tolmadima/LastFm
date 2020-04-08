@@ -17,16 +17,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.example.lastfm.ArtistsDeserializer.NUMBER_OF_ARTISTS;
+
 public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnArtistListener {
-    public static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
-    public static final Integer NUMBER_OF_ARTISTS = 40;
-    public static final String PARSER_PARAM = "artists";
-    public static final String REQUEST_TYPE = "json";
-    public static List<Artist> artists = new ArrayList<>();
+    public final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
+    public final String REQUEST_TYPE = "json";
+    public List<Artist> artists = new ArrayList<>();
     private String toastError = "Ошибка получения списка артистов";
     Context context;
 
-    ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
+    ArtistAdapter artistsAdapter = new ArtistAdapter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

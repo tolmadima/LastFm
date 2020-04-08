@@ -14,12 +14,10 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.lastfm.MainActivity.PARSER_PARAM;
-import static com.example.lastfm.MainActivity.NUMBER_OF_ARTISTS;
-
 public class ArtistsDeserializer implements JsonDeserializer<List<Artist>>
 {
+    private final String PARSER_PARAM = "artists";
+    public static final Integer NUMBER_OF_ARTISTS = 40;
     @Override
     public List<Artist> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {
