@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     public static final String PARSER_PARAM = "artists";
     public static final String REQUEST_TYPE = "json";
     public static List<Artist> requestedArtists = new ArrayList<>();
-    private String toastError = "Ошибка получения списка артистов";
+    private String toastError = getString(R.string.toast_load_error);
     Context context;
 
     ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);

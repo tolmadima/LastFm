@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,16 +12,12 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-import java.util.jar.Attributes;
-
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static android.provider.UserDictionary.Words.APP_ID;
 import static com.example.lastfm.MainActivity.REQUEST_TYPE;
 
 public class ArtistScreen extends AppCompatActivity {
@@ -31,7 +26,8 @@ public class ArtistScreen extends AppCompatActivity {
     private TextView tvPlayCount;
     private ImageView artistImage;
     private TextView tvArtistBio;
-    private String toastError = "Ошибка получения артиста";
+    private final int picNumber = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,27 +50,26 @@ public class ArtistScreen extends AppCompatActivity {
 
             @Override
             public void onSuccess(ArtistInfo value) {
-                ArtistData info = value.getArtist();
-                String artistName = info.getName();
-                Bio artistBio = info.getBio();
-                Stats artistStat = info.getStats();
-                String playcount = artistStat.getPlaycount();
-                String bio = artistBio.getContent();
-                Image url = info.getImage().get(3);
-                String imageUrl = url.getText();
-                loadArtist(artistName,playcount,bio,imageUrl);
+                showArtist(value);
             }
 
             @Override
             public void onError(Throwable e) {
-
-                Toast.makeText(context, toastError, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, getString(R.string.toast_load_error), Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    public void loadArtist(String name, String bio, String playcount, String imageUrl){
-        tvNameView.setText(name);
+    public void showArtist(ArtistInfo value){
+        ArtistData info = value.getArtist();
+        String artistName = info.getName();
+        Bio artistBio = info.getBio();
+        Stats artistStat = info.getStats();
+        String playcount = artistStat.getPlaycount();
+        String bio = artistBio.getContent();
+        Image url = info.getImage().get(picNumber);
+        String imageUrl = url.getText();
+        tvNameView.setText(artistName);
         tvArtistBio.setText(bio);
         tvPlayCount.setText(playcount);
         Picasso.get().load(imageUrl).into(artistImage);
