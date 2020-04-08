@@ -34,17 +34,12 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         setContentView(R.layout.activity_main);
         initRecyclerView();
         retrofitRequest();
-        final Button button = findViewById(R.id.next_screen_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button nextActivityButton = findViewById(R.id.next_screen_button);
+        nextActivityButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.next_screen_button:
-                        Intent intent = new Intent(MainActivity.this, ArtistInfoActivity.class);
-                        startActivity(intent);
-                        break;
-                    default:
-                        break;
-                }
+                     view.setId(R.id.next_screen_button);
+                     Intent intent = new Intent(MainActivity.this, ArtistInfoActivity.class);
+                     startActivity(intent);
             }
         });
     }
