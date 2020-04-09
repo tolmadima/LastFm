@@ -46,7 +46,7 @@ public class ServiceGenerator {
                     .setLevel(HttpLoggingInterceptor.Level.BODY);
 
     private OkHttpClient httpClient =
-            new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            new OkHttpClient.Builder().addInterceptor(logging).addInterceptor(new Interceptor() {
                 @NotNull
                 @Override
                 public Response intercept(@NotNull Chain chain) throws IOException {
@@ -63,13 +63,15 @@ public class ServiceGenerator {
                             .url(url)
                             .build();
 
-                    return chain.proceed(request);
+                    Response response = chain.proceed(request);
+                    return response;
                 }
             }).build();
 
 
     private   Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
@@ -79,6 +81,7 @@ public class ServiceGenerator {
     private <S> S createService(Class<S> serviceClass) {
         if (!httpClient.interceptors().contains(logging)){
             retrofit = builder.build();
+            builder.client(httpClient);
         }
         return retrofit.create(serviceClass);
     }
