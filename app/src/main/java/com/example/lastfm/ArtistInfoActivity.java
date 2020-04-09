@@ -22,8 +22,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static android.provider.UserDictionary.Words.APP_ID;
-import static com.example.lastfm.MainActivity.REQUEST_TYPE;
+import static com.example.lastfm.ArtistsDeserializer.REQUEST_TYPE;
+
 
 public class ArtistInfoActivity extends AppCompatActivity {
     Context context;

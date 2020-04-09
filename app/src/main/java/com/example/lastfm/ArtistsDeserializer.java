@@ -18,6 +18,8 @@ public class ArtistsDeserializer implements JsonDeserializer<List<Artist>>
 {
     private final String PARSER_PARAM = "artists";
     public static final Integer NUMBER_OF_ARTISTS = 40;
+    public static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
+    public static final String REQUEST_TYPE = "json";
     @Override
     public List<Artist> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {

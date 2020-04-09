@@ -17,11 +17,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.example.lastfm.ArtistsDeserializer.APP_ID;
 import static com.example.lastfm.ArtistsDeserializer.NUMBER_OF_ARTISTS;
+import static com.example.lastfm.ArtistsDeserializer.REQUEST_TYPE;
 
 public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnArtistListener {
-    public final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
-    public final String REQUEST_TYPE = "json";
+
     public List<Artist> artists = new ArrayList<>();
     private String toastError = "Ошибка получения списка артистов";
     Context context;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
                         @Override
                         public void onSuccess(List<Artist> value) {
                             artists = value;
-                            setArtists(artists);
+                            showArtists(artists);
                         }
 
                         @Override
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
                     });
     }
 
-    private void setArtists(List<Artist> requestedArtists){
+    private void showArtists(List<Artist> requestedArtists){
         artistsAdapter.addItems(requestedArtists);
     }
 
