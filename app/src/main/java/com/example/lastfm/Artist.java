@@ -7,7 +7,6 @@ public class Artist {
     private String name;
     private String playcount;
 
-
     public Artist(String name, String playCount) {
         this.name = name;
         this.playcount = playCount;

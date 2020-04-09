@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-class ArtistsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
+class ArtistsViewHolder extends RecyclerView.ViewHolder  {
     private TextView tvName;
     private TextView tvPlayCount;
     private ImageView ivImage;
@@ -19,16 +19,16 @@ class ArtistsViewHolder extends RecyclerView.ViewHolder implements View.OnClickL
         tvPlayCount = itemView.findViewById(R.id.artist_playcount);
         mOnArtistListener = onArtistListener;
 
-        itemView.setOnClickListener(this);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnArtistListener.onArtistClick(getAdapterPosition());
+            }
+        });
     }
 
     public void bind(Artist artist) {
         tvName.setText(artist.getArtistName());
         tvPlayCount.setText(artist.getPlayCount());
-    }
-
-    @Override
-    public void onClick(View v) {
-        mOnArtistListener.onArtistClick(getAdapterPosition());
     }
 }
