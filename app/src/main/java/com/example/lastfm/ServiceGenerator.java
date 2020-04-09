@@ -39,7 +39,7 @@ public class ServiceGenerator {
             new OkHttpClient.Builder().addInterceptor(logging).addInterceptor(new LastFmInterceptor()).build();
 
 
-    private   Retrofit.Builder builder = new Retrofit.Builder()
+    private Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))

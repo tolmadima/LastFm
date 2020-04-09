@@ -39,10 +39,10 @@ public class ArtistScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artist_screen);
-        tvNameView = findViewById(R.id.big_artist_name);
-        tvPlayCount = findViewById(R.id.big_artist_playcount);
+        tvNameView = findViewById(R.id.artist_info_name);
+        tvPlayCount = findViewById(R.id.artist_info_playcount);
         artistImage = findViewById(R.id.big_artist_image);
-        tvArtistBio = findViewById(R.id.big_artist_bio);
+        tvArtistBio = findViewById(R.id.artist_info_bio);
         Intent intent = getIntent();
         String name = intent.getStringExtra("artistName");
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
