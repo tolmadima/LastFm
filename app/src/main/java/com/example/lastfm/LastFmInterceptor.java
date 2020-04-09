@@ -9,9 +9,11 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class ArtistInterceptor implements Interceptor {
-    public static final String REQUEST_TYPE = "json";
-    public static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
+public class LastFmInterceptor implements Interceptor {
+    private final String REQUEST_TYPE = "json";
+    private final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
+    private final String APP_ID_QUERY_PARAMETER = "api_key";
+    private final String REQUEST_TYPE_QUERY_PARAMETER = "format";
     @NotNull
     @Override
     public Response intercept(@NotNull Chain chain) throws IOException {
@@ -19,8 +21,8 @@ public class ArtistInterceptor implements Interceptor {
         Request request = chain.request();
         HttpUrl url = request.url()
                 .newBuilder()
-                .addQueryParameter("api_key", APP_ID)
-                .addQueryParameter("format", REQUEST_TYPE)
+                .addQueryParameter(APP_ID_QUERY_PARAMETER, APP_ID)
+                .addQueryParameter(REQUEST_TYPE_QUERY_PARAMETER, REQUEST_TYPE)
                 .build();
 
         request = request

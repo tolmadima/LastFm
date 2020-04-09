@@ -1,23 +1,13 @@
 package com.example.lastfm;
 
-import android.app.Presentation;
-import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import io.reactivex.Single;
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -46,7 +36,7 @@ public class ServiceGenerator {
                     .setLevel(HttpLoggingInterceptor.Level.BODY);
 
     private OkHttpClient httpClient =
-            new OkHttpClient.Builder().addInterceptor(logging).addInterceptor(new ArtistInterceptor()).build();
+            new OkHttpClient.Builder().addInterceptor(logging).addInterceptor(new LastFmInterceptor()).build();
 
 
     private   Retrofit.Builder builder = new Retrofit.Builder()

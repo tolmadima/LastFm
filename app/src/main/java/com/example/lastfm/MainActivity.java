@@ -13,18 +13,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import io.reactivex.Single;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.example.lastfm.ArtistInterceptor.APP_ID;
-import static com.example.lastfm.ArtistInterceptor.REQUEST_TYPE;
-
 public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnArtistListener {
-    public static final Integer NUMBER_OF_ARTISTS = 40;
-    public static final String PARSER_PARAM = "artists";
+    public static final int NUMBER_OF_ARTISTS = 40;
     public static List<Artist> requestedArtists = new ArrayList<>();
 
     ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
@@ -68,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
 
                         @Override
                         public void onError(Throwable e) {
-                            String requestErrorText = getString(R.string.request_error_top);
+                            String requestErrorText = getString(R.string.request_error_message);
                             Toast.makeText(MainActivity.this, requestErrorText, Toast.LENGTH_LONG).show();
                         }
                     });
@@ -88,8 +84,6 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     @Override
     public void onArtistClick(int position) {
         Intent intent = new Intent(this,ArtistScreen.class);
-        Context context = getApplicationContext();
-        Toast.makeText(context,"position = " + position, Toast.LENGTH_LONG).show();
         intent.putExtra("artistName",requestedArtists.get(position).getArtistName());
         startActivity(intent);
     }
