@@ -38,9 +38,8 @@ public class ArtistScreen extends AppCompatActivity {
          tvArtistBio = findViewById(R.id.big_artist_bio);
          Intent intent = getIntent();
          String name = intent.getStringExtra("artistName");
-         LastFMClient client = MainActivity.generateServiceSingleton.getLastFMClient();
-         Single<ArtistInfo> call = client
-                .getArtistInfo(name, "b4ab3bf82dcb495e182e04cfc1f12b7b", REQUEST_TYPE)
+         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
+         Single<ArtistInfo> call = client.getArtistInfo(name, "b4ab3bf82dcb495e182e04cfc1f12b7b", REQUEST_TYPE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         call.subscribe(new SingleObserver<ArtistInfo>() {
@@ -55,7 +54,8 @@ public class ArtistScreen extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Toast.makeText(context, getString(R.string.toast_load_error), Toast.LENGTH_LONG).show();
+                String text = getString(R.string.request_error);
+                Toast.makeText(context, text, Toast.LENGTH_LONG).show();
             }
         });
     }

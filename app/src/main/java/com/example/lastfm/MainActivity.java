@@ -7,14 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import io.reactivex.Single;
@@ -56,12 +52,11 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     }
 
     private void retrofitRequest() {
-        LastFMClient client = generateServiceSingleton.getLastFMClient();
-                    Single<List<Artist>> call = client
-                            .getArtists(NUMBER_OF_ARTISTS, APP_ID, REQUEST_TYPE)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread());
-                    call.subscribe(new SingleObserver<List<Artist>>() {
+        LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
+        Single<List<Artist>> call = client.getArtists(NUMBER_OF_ARTISTS, APP_ID, REQUEST_TYPE)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Artist>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
                         }
@@ -74,9 +69,9 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
 
                         @Override
                         public void onError(Throwable e) {
-                            Toast.makeText(context, toastError, Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, toastError, Toast.LENGTH_LONG).show();
                         }
-                    });
+                    }); 
     }
 
     private void setArtists(List<Artist> requestedArtists){
@@ -97,15 +92,5 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         Toast.makeText(context,"position = " + position, Toast.LENGTH_LONG).show();
         intent.putExtra("artistName",requestedArtists.get(position).getArtistName());
         startActivity(intent);
-    }
-
-    public static final class generateServiceSingleton {
-        private static LastFMClient lastFMClient;
-        public static LastFMClient getLastFMClient(){
-            if (lastFMClient == null) {
-            lastFMClient = ServiceGenerator.createService(LastFMClient.class);
-            }
-            return lastFMClient;
-        }
     }
 }
