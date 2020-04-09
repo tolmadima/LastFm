@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
                 }
             }
         });
-        SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
