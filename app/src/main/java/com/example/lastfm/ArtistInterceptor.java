@@ -15,18 +15,21 @@ public class ArtistInterceptor implements Interceptor {
     @NotNull
     @Override
     public Response intercept(@NotNull Chain chain) throws IOException {
-        Request original = chain.request();
-        HttpUrl originalHttpUrl = original.url();
 
-        HttpUrl url = originalHttpUrl.newBuilder()
+        Request request = chain.request();
+        HttpUrl url = request.url()
+                .newBuilder()
                 .addQueryParameter("api_key", APP_ID)
                 .addQueryParameter("format", REQUEST_TYPE)
                 .build();
 
-        Request.Builder requestBuilder = original.newBuilder()
-                .url(url);
+        request = request
+                .newBuilder()
+                .url(url)
+                .build();
 
-        Request request = requestBuilder.build();
-        return chain.proceed(request);
+        Response response = chain.proceed(request);
+        return response;
     }
 }
+

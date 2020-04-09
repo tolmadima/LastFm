@@ -46,27 +46,7 @@ public class ServiceGenerator {
                     .setLevel(HttpLoggingInterceptor.Level.BODY);
 
     private OkHttpClient httpClient =
-            new OkHttpClient.Builder().addInterceptor(logging).addInterceptor(new Interceptor() {
-                @NotNull
-                @Override
-                public Response intercept(@NotNull Chain chain) throws IOException {
-
-                    Request request = chain.request();
-                    HttpUrl url = request.url()
-                            .newBuilder()
-                            .addQueryParameter("api_key", APP_ID)
-                            .addQueryParameter("format", REQUEST_TYPE)
-                            .build();
-
-                    request = request
-                            .newBuilder()
-                            .url(url)
-                            .build();
-
-                    Response response = chain.proceed(request);
-                    return response;
-                }
-            }).build();
+            new OkHttpClient.Builder().addInterceptor(logging).addInterceptor(new ArtistInterceptor()).build();
 
 
     private   Retrofit.Builder builder = new Retrofit.Builder()
