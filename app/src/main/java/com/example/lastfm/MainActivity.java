@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     public static final String PARSER_PARAM = "artists";
     private static final String REQUEST_TYPE = "json";
     public static List<Artist> requestedArtists = new ArrayList<>();
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     ArtistAdapter artistsAdapter = new ArtistAdapter(this);
 
@@ -52,15 +53,6 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
             @Override
             public void onRefresh() {
                 retrofitRequest();
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(mSwipeRefreshLayout.isRefreshing()) {
-                            mSwipeRefreshLayout.setRefreshing(false);
-                        }
-                    }
-                }, 1000);
             }
         });
     }
@@ -79,14 +71,19 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
                             Log.e("Thread", Thread.currentThread().getName());
                             requestedArtists = value;
                             setArtists(requestedArtists);
-                            System.out.println("data setted");
+                            hideRefreshing();
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
+                            hideRefreshing();
                         }
                     });
+    }
+
+    private void hideRefreshing(){
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     private void setArtists(List<Artist> requestedArtists){
