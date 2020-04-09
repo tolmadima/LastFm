@@ -7,6 +7,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +52,15 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
             @Override
             public void onRefresh() {
                 retrofitRequest();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                }, 1000);
             }
         });
     }
@@ -85,8 +95,8 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
 
     private void initRecyclerView() {
         RecyclerView artistsRecyclerView = findViewById(R.id.rv_artists);
-        artistsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        artistsAdapter = new ArtistAdapter(this);
+        artistsRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        artistsAdapter = new ArtistAdapter(this::onArtistClick);
         artistsRecyclerView.setAdapter(artistsAdapter);
     }
 
