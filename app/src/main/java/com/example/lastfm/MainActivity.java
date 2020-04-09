@@ -19,7 +19,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnArtistListener {
+public class MainActivity extends AppCompatActivity {
     public static final int NUMBER_OF_ARTISTS = 40;
     public static List<Artist> requestedArtists = new ArrayList<>();
 
@@ -77,12 +77,16 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     private void initRecyclerView() {
         RecyclerView artistsRecyclerView = findViewById(R.id.artistsRecyclerView);
         artistsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        artistsAdapter = new ArtistAdapter(this);
+        artistsAdapter = new ArtistAdapter(new ArtistAdapter.OnArtistListener() {
+            @Override
+            public void onArtistClick(int position) {
+                onArtistClick(position);
+            }
+        });
         artistsRecyclerView.setAdapter(artistsAdapter);
     }
 
-    @Override
-    public void onArtistClick(int position) {
+    private void onArtistClick(int position) {
         Intent intent = new Intent(this,ArtistScreen.class);
         intent.putExtra("artistName",requestedArtists.get(position).getArtistName());
         startActivity(intent);
