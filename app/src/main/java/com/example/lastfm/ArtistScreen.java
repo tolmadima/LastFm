@@ -10,6 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lastfm.ArtistInfo.ArtistData;
+import com.example.lastfm.ArtistInfo.ArtistInfo;
+import com.example.lastfm.ArtistInfo.Bio;
+import com.example.lastfm.ArtistInfo.Image;
+import com.example.lastfm.ArtistInfo.Stats;
 import com.squareup.picasso.Picasso;
 
 import io.reactivex.Single;
@@ -18,7 +23,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.example.lastfm.MainActivity.REQUEST_TYPE;
+
 
 public class ArtistScreen extends AppCompatActivity {
     Context context;
@@ -26,7 +31,7 @@ public class ArtistScreen extends AppCompatActivity {
     private TextView tvPlayCount;
     private ImageView artistImage;
     private TextView tvArtistBio;
-    private final int picNumber = 3;
+    private final int picSize = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,7 @@ public class ArtistScreen extends AppCompatActivity {
          Intent intent = getIntent();
          String name = intent.getStringExtra("artistName");
          LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
-         Single<ArtistInfo> call = client.getArtistInfo(name, "b4ab3bf82dcb495e182e04cfc1f12b7b", REQUEST_TYPE)
+         Single<ArtistInfo> call = client.getArtistInfo(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         call.subscribe(new SingleObserver<ArtistInfo>() {
@@ -54,8 +59,8 @@ public class ArtistScreen extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                String text = getString(R.string.request_error);
-                Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+                String text = getString(R.string.request_error_get_info);
+                Toast.makeText(ArtistScreen.this, text, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -67,7 +72,7 @@ public class ArtistScreen extends AppCompatActivity {
         Stats artistStat = info.getStats();
         String playcount = artistStat.getPlaycount();
         String bio = artistBio.getContent();
-        Image url = info.getImage().get(picNumber);
+        Image url = info.getImage().get(picSize);
         String imageUrl = url.getText();
         tvNameView.setText(artistName);
         tvArtistBio.setText(bio);

@@ -1,11 +1,11 @@
-package com.example.lastfm;
+package com.example.lastfm.ArtistInfo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-class ArtistData {
+public class ArtistData {
 
     @SerializedName("name")
     @Expose

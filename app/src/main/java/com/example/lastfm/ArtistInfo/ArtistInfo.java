@@ -1,22 +1,24 @@
-package com.example.lastfm;
+
+package com.example.lastfm.ArtistInfo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
 
-class Similar {
+public class ArtistInfo {
 
     @SerializedName("artist")
     @Expose
-    private List<Artist_> artist = null;
+    private ArtistData artist;
 
-    public List<Artist_> getArtist() {
+    public ArtistData getArtist() {
         return artist;
     }
 
-    public void setArtist(List<Artist_> artist) {
+    public void setArtist(ArtistData artist) {
         this.artist = artist;
     }
 
 }
+
+

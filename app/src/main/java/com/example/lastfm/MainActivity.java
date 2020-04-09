@@ -19,14 +19,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.example.lastfm.ArtistInterceptor.APP_ID;
+import static com.example.lastfm.ArtistInterceptor.REQUEST_TYPE;
+
 public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnArtistListener {
-    public static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
     public static final Integer NUMBER_OF_ARTISTS = 40;
     public static final String PARSER_PARAM = "artists";
-    public static final String REQUEST_TYPE = "json";
     public static List<Artist> requestedArtists = new ArrayList<>();
-    private String toastError = getString(R.string.toast_load_error);
-    Context context;
 
     ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
 
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
 
     private void retrofitRequest() {
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
-        Single<List<Artist>> call = client.getArtists(NUMBER_OF_ARTISTS, APP_ID, REQUEST_TYPE)
+        client.getArtists(NUMBER_OF_ARTISTS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Artist>>() {
@@ -69,9 +68,10 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
 
                         @Override
                         public void onError(Throwable e) {
-                            Toast.makeText(MainActivity.this, toastError, Toast.LENGTH_LONG).show();
+                            String requestErrorText = getString(R.string.request_error_top);
+                            Toast.makeText(MainActivity.this, requestErrorText, Toast.LENGTH_LONG).show();
                         }
-                    }); 
+                    });
     }
 
     private void setArtists(List<Artist> requestedArtists){
