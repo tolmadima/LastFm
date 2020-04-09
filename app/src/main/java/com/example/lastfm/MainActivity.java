@@ -3,10 +3,13 @@ package com.example.lastfm;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -22,8 +25,9 @@ import io.reactivex.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity {
     public static final int NUMBER_OF_ARTISTS = 40;
     public static List<Artist> requestedArtists = new ArrayList<>();
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
+    ArtistAdapter artistsAdapter = new ArtistAdapter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                retrofitRequest();
+            }
+        });
     }
 
     private void retrofitRequest() {
@@ -60,14 +71,21 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(List<Artist> value) {
                             requestedArtists = value;
                             setArtists(requestedArtists);
+                            hideRefreshing();
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            e.printStackTrace();
+                            hideRefreshing();
                             String requestErrorText = getString(R.string.request_error_message);
                             Toast.makeText(MainActivity.this, requestErrorText, Toast.LENGTH_LONG).show();
                         }
                     });
+    }
+
+    private void hideRefreshing(){
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     private void setArtists(List<Artist> requestedArtists){
