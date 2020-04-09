@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     private String toastError = "Ошибка получения списка артистов";
     Context context;
 
-    ArtistAdapter artistsAdapter = new ArtistAdapter(this);
+    private ArtistAdapter artistsAdapter = new ArtistAdapter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +35,6 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         setContentView(R.layout.activity_main);
         initRecyclerView();
         retrofitRequest();
-        final Button nextActivityButton = findViewById(R.id.next_screen_button);
-        nextActivityButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                     view.setId(R.id.next_screen_button);
-                     Intent intent = new Intent(MainActivity.this, ArtistInfoActivity.class);
-                     startActivity(intent);
-            }
-        });
     }
 
     private void retrofitRequest() {

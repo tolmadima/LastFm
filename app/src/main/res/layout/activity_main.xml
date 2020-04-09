@@ -13,14 +13,4 @@
         android:id="@+id/rvArtists"
     />
 
-    <Button
-        android:id="@+id/next_screen_button"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:text="Open"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="300dp"
-
-        />
-
 </FrameLayout>
