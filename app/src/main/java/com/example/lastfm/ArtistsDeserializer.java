@@ -17,9 +17,8 @@ import java.util.List;
 public class ArtistsDeserializer implements JsonDeserializer<List<Artist>>
 {
     private final String PARSER_PARAM = "artists";
-    public static final Integer NUMBER_OF_ARTISTS = 40;
-    public static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
-    public static final String REQUEST_TYPE = "json";
+    private final String ARTIST_PARAM = "artist";
+
     @Override
     public List<Artist> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {
@@ -30,11 +29,10 @@ public class ArtistsDeserializer implements JsonDeserializer<List<Artist>>
         try{
                 Gson gson = new Gson();
                 JsonObject parsing = jsonObject.getAsJsonObject(PARSER_PARAM);
-                JsonArray artist = parsing.getAsJsonArray("artist");
+                JsonArray artist = parsing.getAsJsonArray(ARTIST_PARAM);
                 JSONArray artistJson = new JSONArray(gson.toJson(artist));
-                for (int i = 0; i < NUMBER_OF_ARTISTS; i++) {
-                    JSONObject data = artistJson.getJSONObject(i);
-                    artistData = gson.fromJson(String.valueOf(data), Artist.class);
+                for (int i = 0; i < artist.size(); i++) {
+                    artistData = gson.fromJson(artist.get(i), Artist.class);
                     parsedArtists.add(i, artistData);
                 }
             } catch (JSONException e) {
