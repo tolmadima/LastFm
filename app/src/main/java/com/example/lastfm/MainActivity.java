@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(List<Artist> info) {
-                            showArtists(info);
+                            requestedArtists = info;
+                            showArtists(requestedArtists);
                             hideRefreshing();
                         }
 
@@ -77,14 +78,14 @@ public class MainActivity extends AppCompatActivity {
         artistsAdapter = new ArtistAdapter(new ArtistAdapter.OnArtistListener() {
             @Override
             public void onArtistClick(int position) {
-                onArtistClick(position);
+                MainActivity.this.onArtistClick(position);
             }
         });
         artistsRecyclerView.setAdapter(artistsAdapter);
     }
 
     private void onArtistClick(int position) {
-        Intent intent = new Intent(this,ArtistInfoActivity.class);
+        Intent intent = new Intent(MainActivity.this,ArtistInfoActivity.class);
         intent.putExtra("artistName",requestedArtists.get(position).getArtistName());
         startActivity(intent);
     }
