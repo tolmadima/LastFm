@@ -10,13 +10,13 @@ class ArtistsViewHolder extends RecyclerView.ViewHolder  {
     private TextView tvName;
     private TextView tvPlayCount;
     private ImageView ivImage;
-    ArtistAdapter.OnArtistListener mOnArtistListener;
+    private ArtistAdapter.OnArtistListener mOnArtistListener;
 
     public ArtistsViewHolder(View itemView, ArtistAdapter.OnArtistListener onArtistListener){
         super (itemView);
 //            ivImage = itemView.findViewById(R.id.artist_image);
-        tvName = itemView.findViewById(R.id.artist_name);
-        tvPlayCount = itemView.findViewById(R.id.artist_playcount);
+        tvName = itemView.findViewById(R.id.tv_artist_name);
+        tvPlayCount = itemView.findViewById(R.id.tv_artist_playcount);
         mOnArtistListener = onArtistListener;
 
         itemView.setOnClickListener(new View.OnClickListener() {

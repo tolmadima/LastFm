@@ -24,7 +24,7 @@ import io.reactivex.schedulers.Schedulers;
 
 
 
-public class ArtistScreen extends AppCompatActivity {
+public class ArtistInfoActivity extends AppCompatActivity {
     Context context;
     private TextView tvNameView;
     private TextView tvPlayCount;
@@ -62,7 +62,7 @@ public class ArtistScreen extends AppCompatActivity {
             @Override
             public void onError(Throwable e) {
                 String text = getString(R.string.request_error_message);
-                Toast.makeText(ArtistScreen.this, text, Toast.LENGTH_LONG).show();
+                Toast.makeText(ArtistInfoActivity.this, text, Toast.LENGTH_LONG).show();
             }
         });
     }
