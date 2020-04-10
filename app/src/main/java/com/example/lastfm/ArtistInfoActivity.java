@@ -1,6 +1,6 @@
 package com.example.lastfm;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import io.reactivex.schedulers.Schedulers;
 
 
 
-public class ArtistInfoActivity extends AppCompatActivity {
+public class ArtistInfoActivity extends FragmentActivity {
     Context context;
     private TextView tvNameView;
     private TextView tvPlayCount;
@@ -41,7 +41,7 @@ public class ArtistInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_artist_screen);
         tvNameView = findViewById(R.id.artist_info_name);
         tvPlayCount = findViewById(R.id.artist_info_playcount);
-        artistImage = findViewById(R.id.big_artist_image);
+        artistImage = findViewById(R.id.artist_info_image);
         tvArtistBio = findViewById(R.id.artist_info_bio);
         Intent intent = getIntent();
         String name = intent.getStringExtra("artistName");
