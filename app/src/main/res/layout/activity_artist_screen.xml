@@ -16,28 +16,44 @@
         />
 
     <TextView
-        android:id="@+id/big_artist_name"
+        android:id="@+id/artist_info_name"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/big_artist_image"
         android:layout_marginTop="@dimen/item_margin"
+        android:layout_marginLeft="@dimen/item_margin"
+        android:layout_marginRight="@dimen/item_margin"
         />
     <TextView
-        android:id="@+id/big_artist_playcount"
+        android:id="@+id/artist_info_listeners"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/big_artist_name"
+        android:layout_below="@+id/artist_info_name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/item_margin"
+        android:layout_marginLeft="@dimen/item_margin"
+        android:layout_marginRight="@dimen/item_margin"
         />
     <TextView
-        android:id="@+id/big_artist_bio"
+        android:id="@+id/artist_info_playcount"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/big_artist_playcount"
+        android:layout_below="@+id/artist_info_listeners"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/item_margin"
+        android:layout_marginLeft="@dimen/item_margin"
+        android:layout_marginRight="@dimen/item_margin"
         />
 
+    <TextView
+        android:id="@+id/artist_info_bio"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/artist_info_playcount"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/item_margin"
+        android:layout_marginLeft="@dimen/item_margin"
+        android:layout_marginRight="@dimen/item_margin"
+        />
 </RelativeLayout>

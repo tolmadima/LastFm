@@ -3,32 +3,26 @@ package com.example.lastfm;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.content.Context;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
-import io.reactivex.Single;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-
-
-public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnArtistListener {
-
-    public static final String APP_ID = "b4ab3bf82dcb495e182e04cfc1f12b7b";
-    public static final String REQUEST_TYPE = "json";
+public class MainActivity extends AppCompatActivity {
     public static final int NUMBER_OF_ARTISTS = 40;
-    public List<Artist> artists = new ArrayList<>();
-    private String toastError = "Ошибка получения списка артистов";
-    Context context;
+    public static List<Artist> requestedArtists = new ArrayList<>();
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private ArtistAdapter artistsAdapter = new ArtistAdapter(this);
+    ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,30 +30,43 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         setContentView(R.layout.activity_main);
         initRecyclerView();
         retrofitRequest();
+        mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                retrofitRequest();
+            }
+        });
     }
 
     private void retrofitRequest() {
-        LastFMClient client = generateServiceSingleton.getLastFMClient();
-                    Single<List<Artist>> call = client
-                            .getArtists(NUMBER_OF_ARTISTS, APP_ID, REQUEST_TYPE)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread());
-                    call.subscribe(new SingleObserver<List<Artist>>() {
+        LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
+        client.getArtists(NUMBER_OF_ARTISTS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Artist>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
                         }
 
                         @Override
-                        public void onSuccess(List<Artist> value) {
-                            artists = value;
-                            showArtists(artists);
+                        public void onSuccess(List<Artist> info) {
+                            showArtists(info);
+                            hideRefreshing();
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            Toast.makeText(context, toastError, Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                            hideRefreshing();
+                            String requestErrorText = getString(R.string.request_error_message);
+                            Toast.makeText(MainActivity.this, requestErrorText, Toast.LENGTH_LONG).show();
                         }
                     });
+    }
+
+    private void hideRefreshing(){
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     private void showArtists(List<Artist> requestedArtists){
@@ -67,28 +74,20 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     }
 
     private void initRecyclerView() {
-        RecyclerView rvArtists = findViewById(R.id.rvArtists);
-        rvArtists.setLayoutManager(new LinearLayoutManager(this));
-        artistsAdapter = new ArtistAdapter(this);
-        rvArtists.setAdapter(artistsAdapter);
-    }
-
-    @Override
-    public void onArtistClick(int position) {
-        Intent intent = new Intent(this, ArtistInfoActivity.class);
-        Context context = getApplicationContext();
-        Toast.makeText(context,"position = " + position, Toast.LENGTH_LONG).show();
-        intent.putExtra("artistName", artists.get(position).getArtistName());
-        startActivity(intent);
-    }
-
-    public static final class generateServiceSingleton {
-        private static LastFMClient lastFMClient;
-        public static LastFMClient getLastFMClient(){
-            if (lastFMClient == null) {
-            lastFMClient = ServiceGenerator.createService(LastFMClient.class);
+        RecyclerView artistsRecyclerView = findViewById(R.id.rv_artists);
+        artistsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        artistsAdapter = new ArtistAdapter(new ArtistAdapter.OnArtistListener() {
+            @Override
+            public void onArtistClick(int position) {
+                onArtistClick(position);
             }
-            return lastFMClient;
-        }
+        });
+        artistsRecyclerView.setAdapter(artistsAdapter);
+    }
+
+    private void onArtistClick(int position) {
+        Intent intent = new Intent(this,ArtistInfoActivity.class);
+        intent.putExtra("artistName",requestedArtists.get(position).getArtistName());
+        startActivity(intent);
     }
 }

@@ -7,3 +7,10 @@
 /.idea
 .externalNativeBuild
 .cxx
+.idea/vcs.xml
+.idea/codeStyles/Project.xml
+.idea/gradle.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
+.idea/gradle.xml
+.idea/misc.xml

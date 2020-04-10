@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
 public class ArtistsDeserializer implements JsonDeserializer<List<Artist>>
 {
     private final String PARSER_PARAM = "artists";
@@ -39,5 +40,5 @@ public class ArtistsDeserializer implements JsonDeserializer<List<Artist>>
                 e.printStackTrace();
             }
             return parsedArtists;
-        }
     }
+}
