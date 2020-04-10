@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +16,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int NUMBER_OF_ARTISTS = 40;
-    public static List<Artist> requestedArtists = new ArrayList<>();
+    private final int NUMBER_OF_ARTISTS = 40;
+    private List<Artist> requestedArtists = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
