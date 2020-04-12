@@ -1,11 +1,13 @@
 package com.example.lastfm;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +26,7 @@ import io.reactivex.schedulers.Schedulers;
 
 
 
-public class ArtistInfoActivity extends AppCompatActivity {
+public class ArtistInfoFragment extends Fragment {
     Context context;
     private TextView tvNameView;
     private TextView tvPlayCount;
@@ -36,13 +38,14 @@ public class ArtistInfoActivity extends AppCompatActivity {
     private static final int PICTURE_SIZE = 3;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_artist_screen);
-        tvNameView = findViewById(R.id.artist_info_name);
-        tvPlayCount = findViewById(R.id.artist_info_playcount);
-        artistImage = findViewById(R.id.big_artist_image);
-        tvArtistBio = findViewById(R.id.artist_info_bio);
+        View view = inflater.inflate(R.layout.artist_info_fragment, null);
+        tvNameView = view.findViewById(R.id.artist_info_name);
+        tvPlayCount = view.findViewById(R.id.artist_info_playcount);
+        artistImage = view.findViewById(R.id.big_artist_image);
+        tvArtistBio = view.findViewById(R.id.artist_info_bio);
         Intent intent = getIntent();
         String name = intent.getStringExtra("artistName");
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
@@ -62,9 +65,10 @@ public class ArtistInfoActivity extends AppCompatActivity {
             @Override
             public void onError(Throwable e) {
                 String text = getString(R.string.request_error_message);
-                Toast.makeText(ArtistInfoActivity.this, text, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
             }
         });
+        return inflater.inflate(R.layout.artist_list_fragment, container, false);
     }
 
     public void showInfo(ArtistInfo info){
