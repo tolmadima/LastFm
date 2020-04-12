@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -39,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void retrofitRequest() {
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
+        final ProgressDialog progressDoalog;
+        progressDoalog = new ProgressDialog(MainActivity.this);
+        progressDoalog.setMax(100);
+        progressDoalog.setMessage("Loading");
+        progressDoalog.setTitle("Looking for best artists!");
+        progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDoalog.show();
         client.getArtists(NUMBER_OF_ARTISTS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -52,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                             requestedArtists = info;
                             showArtists(requestedArtists);
                             hideRefreshing();
+                            progressDoalog.dismiss();
                         }
 
                         @Override
@@ -60,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                             hideRefreshing();
                             String requestErrorText = getString(R.string.request_error_message);
                             Toast.makeText(MainActivity.this, requestErrorText, Toast.LENGTH_LONG).show();
+                            progressDoalog.dismiss();
                         }
                     });
     }
