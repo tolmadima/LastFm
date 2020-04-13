@@ -46,8 +46,7 @@ public class ArtistInfoFragment extends Fragment {
         tvPlayCount = view.findViewById(R.id.artist_info_playcount);
         artistImage = view.findViewById(R.id.big_artist_image);
         tvArtistBio = view.findViewById(R.id.artist_info_bio);
-        Intent intent = getIntent();
-        String name = intent.getStringExtra("artistName");
+        String name = "Billie Eilish";
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
         client.getArtistInfo(name)
                 .subscribeOn(Schedulers.io())
@@ -65,13 +64,13 @@ public class ArtistInfoFragment extends Fragment {
             @Override
             public void onError(Throwable e) {
                 String text = getString(R.string.request_error_message);
-                Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
             }
         });
-        return inflater.inflate(R.layout.artist_list_fragment, container, false);
+        return view;
     }
 
-    public void showInfo(ArtistInfo info){
+    private void showInfo(ArtistInfo info){
         ArtistData data = info.getArtist();
         String artistName = data.getName();
         Bio artistBio = data.getBio();
