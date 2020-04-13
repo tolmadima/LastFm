@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private final int NUMBER_OF_ARTISTS = 40;
     private List<Artist> requestedArtists = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ProgressDialog progressDialog;
 
     ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
 
@@ -41,13 +42,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void retrofitRequest() {
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
-        final ProgressDialog progressDoalog;
-        progressDoalog = new ProgressDialog(MainActivity.this);
-        progressDoalog.setMax(100);
-        progressDoalog.setMessage("Loading");
-        progressDoalog.setTitle("Looking for best artists!");
-        progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDoalog.show();
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMax(100);
+        progressDialog.setMessage("Loading");
+        progressDialog.setTitle("Looking for best artists!");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.show();
         client.getArtists(NUMBER_OF_ARTISTS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                             requestedArtists = info;
                             showArtists(requestedArtists);
                             hideRefreshing();
-                            progressDoalog.dismiss();
+                            finishProgressDialog();
                         }
 
                         @Override
@@ -70,9 +70,13 @@ public class MainActivity extends AppCompatActivity {
                             hideRefreshing();
                             String requestErrorText = getString(R.string.request_error_message);
                             Toast.makeText(MainActivity.this, requestErrorText, Toast.LENGTH_LONG).show();
-                            progressDoalog.dismiss();
+                            finishProgressDialog();
                         }
                     });
+    }
+
+    private void finishProgressDialog(){
+        progressDialog.dismiss();
     }
 
     private void hideRefreshing(){
