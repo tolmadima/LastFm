@@ -16,9 +16,9 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         Fragment fragment = new ArtistListFragment();
         if (fragment != null) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.container, fragment);
-            fragmentTransaction.commit();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, fragment)
+                    .commit();
         }
     }
 

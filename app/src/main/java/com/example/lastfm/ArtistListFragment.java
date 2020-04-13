@@ -23,14 +23,14 @@ public class ArtistListFragment extends Fragment {
     private List<Artist> requestedArtists = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
+    private ArtistAdapter artistsAdapter;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.artist_list_fragment,null);
+        View view = inflater.inflate(R.layout.artist_list_fragment,container,false);
         initRecyclerView(view);
         retrofitRequest();
         mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
@@ -90,6 +90,14 @@ public class ArtistListFragment extends Fragment {
     }
 
     private void onArtistClick(int position) {
-        String text = requestedArtists.get(position).getArtistName();
+        Fragment fragment = new ArtistInfoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("name",requestedArtists.get(position).getArtistName());
+        fragment.setArguments(bundle);
+        if (fragment != null) {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
+        }
     }
 }

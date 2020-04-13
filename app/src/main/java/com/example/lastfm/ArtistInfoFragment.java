@@ -41,12 +41,14 @@ public class ArtistInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                 Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.artist_info_fragment, null);
+        View view = inflater.inflate(R.layout.artist_info_fragment, container, false);
         tvNameView = view.findViewById(R.id.artist_info_name);
         tvPlayCount = view.findViewById(R.id.artist_info_playcount);
         artistImage = view.findViewById(R.id.big_artist_image);
         tvArtistBio = view.findViewById(R.id.artist_info_bio);
-        String name = "Billie Eilish";
+        Bundle bundle = this.getArguments();
+        String name;
+        name = bundle.getString("name");
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
         client.getArtistInfo(name)
                 .subscribeOn(Schedulers.io())
