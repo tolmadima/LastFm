@@ -35,7 +35,7 @@ public class ArtistInfoFragment extends Fragment {
     //0 - самое маленькое разрешение
     //4 - самое большое разрешение
     private static final int PICTURE_SIZE = 3;
-    private final String bundleKey = "name";
+    private final String TAG_ARTIST_NAME = "name";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +47,7 @@ public class ArtistInfoFragment extends Fragment {
         artistImage = view.findViewById(R.id.big_artist_image);
         tvArtistBio = view.findViewById(R.id.artist_info_bio);
         Bundle bundle = getArguments();
-        String name = bundle.getString(bundleKey);
+        String name = bundle.getString(TAG_ARTIST_NAME);
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
         client.getArtistInfo(name)
                 .subscribeOn(Schedulers.io())

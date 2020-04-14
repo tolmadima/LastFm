@@ -23,7 +23,7 @@ public class ArtistListFragment extends Fragment {
     private final int NUMBER_OF_ARTISTS = 40;
     private List<Artist> requestedArtists = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private final String bundleKey = "name";
+    private final String TAG_ARTIST_NAME = "name";
 
     private ArtistAdapter artistsAdapter;
 
@@ -95,7 +95,7 @@ public class ArtistListFragment extends Fragment {
     private void onArtistClick(int position) {
         Fragment fragment = new ArtistInfoFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(bundleKey,requestedArtists.get(position).getArtistName());
+        bundle.putString(TAG_ARTIST_NAME,requestedArtists.get(position).getArtistName());
         fragment.setArguments(bundle);
         if (fragment != null) {
             getFragmentManager().beginTransaction()
