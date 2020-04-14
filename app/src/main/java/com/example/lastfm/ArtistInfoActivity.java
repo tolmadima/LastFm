@@ -14,7 +14,7 @@ import com.example.lastfm.ArtistInfo.ArtistDataDto;
 import com.example.lastfm.ArtistInfo.ArtistInfoDto;
 import com.example.lastfm.ArtistInfo.BioDto;
 import com.example.lastfm.ArtistInfo.ImageDto;
-import com.example.lastfm.ArtistInfo.Stats;
+import com.example.lastfm.ArtistInfo.StatsDto;
 import com.squareup.picasso.Picasso;
 
 import io.reactivex.SingleObserver;
@@ -71,7 +71,7 @@ public class ArtistInfoActivity extends AppCompatActivity {
         ArtistDataDto data = info.getArtist();
         String artistName = data.getName();
         BioDto artistBio = data.getBio();
-        Stats artistStat = data.getStats();
+        StatsDto artistStat = data.getStats();
         String playcount = artistStat.getPlaycount();
         String bio = artistBio.getContent();
         ImageDto url = data.getImage().get(PICTURE_SIZE);

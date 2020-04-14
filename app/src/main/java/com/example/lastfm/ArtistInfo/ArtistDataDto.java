@@ -27,7 +27,7 @@ public class ArtistDataDto {
     private String ontour;
     @SerializedName("stats")
     @Expose
-    private Stats stats;
+    private StatsDto stats;
     @SerializedName("similar")
     @Expose
     private Similar similar;
@@ -86,11 +86,11 @@ public class ArtistDataDto {
         this.ontour = ontour;
     }
 
-    public Stats getStats() {
+    public StatsDto getStats() {
         return stats;
     }
 
-    public void setStats(Stats stats) {
+    public void setStats(StatsDto stats) {
         this.stats = stats;
     }
 
