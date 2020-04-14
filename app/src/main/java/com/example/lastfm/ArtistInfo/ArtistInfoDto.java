@@ -5,17 +5,17 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class ArtistInfo {
+public class ArtistInfoDto {
 
     @SerializedName("artist")
     @Expose
-    private ArtistData artist;
+    private ArtistDataDto artist;
 
-    public ArtistData getArtist() {
+    public ArtistDataDto getArtist() {
         return artist;
     }
 
-    public void setArtist(ArtistData artist) {
+    public void setArtist(ArtistDataDto artist) {
         this.artist = artist;
     }
 

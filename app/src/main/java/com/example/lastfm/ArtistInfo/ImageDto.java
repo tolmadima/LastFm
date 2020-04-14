@@ -3,7 +3,7 @@ package com.example.lastfm.ArtistInfo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Image {
+public class ImageDto {
 
     @SerializedName("#text")
     @Expose

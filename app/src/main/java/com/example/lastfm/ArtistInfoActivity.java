@@ -10,10 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lastfm.ArtistInfo.ArtistData;
-import com.example.lastfm.ArtistInfo.ArtistInfo;
-import com.example.lastfm.ArtistInfo.Bio;
-import com.example.lastfm.ArtistInfo.Image;
+import com.example.lastfm.ArtistInfo.ArtistDataDto;
+import com.example.lastfm.ArtistInfo.ArtistInfoDto;
+import com.example.lastfm.ArtistInfo.BioDto;
+import com.example.lastfm.ArtistInfo.ImageDto;
 import com.example.lastfm.ArtistInfo.Stats;
 import com.squareup.picasso.Picasso;
 
@@ -49,13 +49,13 @@ public class ArtistInfoActivity extends AppCompatActivity {
         client.getArtistInfo(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<ArtistInfo>() {
+                .subscribe(new SingleObserver<ArtistInfoDto>() {
             @Override
             public void onSubscribe(Disposable d) {
             }
 
             @Override
-            public void onSuccess(ArtistInfo info) {
+            public void onSuccess(ArtistInfoDto info) {
                 showInfo(info);
             }
 
@@ -67,14 +67,14 @@ public class ArtistInfoActivity extends AppCompatActivity {
         });
     }
 
-    public void showInfo(ArtistInfo info){
-        ArtistData data = info.getArtist();
+    public void showInfo(ArtistInfoDto info){
+        ArtistDataDto data = info.getArtist();
         String artistName = data.getName();
-        Bio artistBio = data.getBio();
+        BioDto artistBio = data.getBio();
         Stats artistStat = data.getStats();
         String playcount = artistStat.getPlaycount();
         String bio = artistBio.getContent();
-        Image url = data.getImage().get(PICTURE_SIZE);
+        ImageDto url = data.getImage().get(PICTURE_SIZE);
         String imageUrl = url.getText();
         tvNameView.setText(artistName);
         tvArtistBio.setText(bio);

@@ -3,7 +3,7 @@ package com.example.lastfm.ArtistInfo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Bio {
+public class BioDto {
 
     @SerializedName("links")
     @Expose

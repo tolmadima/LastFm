@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ArtistData {
+public class ArtistDataDto {
 
     @SerializedName("name")
     @Expose
@@ -18,7 +18,7 @@ public class ArtistData {
     private String url;
     @SerializedName("image")
     @Expose
-    private List<Image> image = null;
+    private List<ImageDto> image = null;
     @SerializedName("streamable")
     @Expose
     private String streamable;
@@ -36,7 +36,7 @@ public class ArtistData {
     private Tags tags;
     @SerializedName("bio")
     @Expose
-    private Bio bio;
+    private BioDto bio;
 
     public String getName() {
         return name;
@@ -62,11 +62,11 @@ public class ArtistData {
         this.url = url;
     }
 
-    public List<Image> getImage() {
+    public List<ImageDto> getImage() {
         return image;
     }
 
-    public void setImage(List<Image> image) {
+    public void setImage(List<ImageDto> image) {
         this.image = image;
     }
 
@@ -110,11 +110,11 @@ public class ArtistData {
         this.tags = tags;
     }
 
-    public Bio getBio() {
+    public BioDto getBio() {
         return bio;
     }
 
-    public void setBio(Bio bio) {
+    public void setBio(BioDto bio) {
         this.bio = bio;
     }
 
