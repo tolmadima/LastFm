@@ -66,20 +66,20 @@ public class ArtistInfoActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(ArtistInfo info) {
                         showInfo(info);
-                        finishProgressBar();
+                        hideLoading();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         String text = getString(R.string.request_error_message);
                         Toast.makeText(ArtistInfoActivity.this, text, Toast.LENGTH_LONG).show();
-                        finishProgressBar();
+                        hideLoading();
                     }
                 });
     }
 
-    private void finishProgressBar(){
-        progressBar.setVisibility(ProgressBar.INVISIBLE);
+    private void hideLoading(){
+        progressBar.setVisibility(ProgressBar.GONE);
     }
 
     public void showInfo(ArtistInfo info){

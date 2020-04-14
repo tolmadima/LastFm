@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initRecyclerView();
+        progressBar = (ProgressBar) findViewById(R.id.listProgressBar);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
         retrofitRequest();
         mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -41,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void retrofitRequest() {
-        progressBar = (ProgressBar) findViewById(R.id.listProgressBar);
-        progressBar.setVisibility(ProgressBar.VISIBLE);
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
         client.getArtists(NUMBER_OF_ARTISTS)
                 .subscribeOn(Schedulers.io())
