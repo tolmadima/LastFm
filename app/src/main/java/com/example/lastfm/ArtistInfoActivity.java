@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +35,12 @@ public class ArtistInfoActivity extends AppCompatActivity {
     //0 - самое маленькое разрешение
     //4 - самое большое разрешение
     private static final int PICTURE_SIZE = 3;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_artist_screen);
         tvNameView = findViewById(R.id.artist_info_name);
         tvPlayCount = findViewById(R.id.artist_info_playcount);
@@ -45,26 +48,38 @@ public class ArtistInfoActivity extends AppCompatActivity {
         tvArtistBio = findViewById(R.id.artist_info_bio);
         Intent intent = getIntent();
         String name = intent.getStringExtra("artistName");
+        requestArtist(name);
+    }
+
+    public void requestArtist(String name){
+        progressBar = (ProgressBar) findViewById(R.id.artistProgressBar);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
         client.getArtistInfo(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<ArtistInfo>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-            }
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
 
-            @Override
-            public void onSuccess(ArtistInfo info) {
-                showInfo(info);
-            }
+                    @Override
+                    public void onSuccess(ArtistInfo info) {
+                        showInfo(info);
+                        finishProgressBar();
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                String text = getString(R.string.request_error_message);
-                Toast.makeText(ArtistInfoActivity.this, text, Toast.LENGTH_LONG).show();
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        String text = getString(R.string.request_error_message);
+                        Toast.makeText(ArtistInfoActivity.this, text, Toast.LENGTH_LONG).show();
+                        finishProgressBar();
+                    }
+                });
+    }
+
+    private void finishProgressBar(){
+        progressBar.setVisibility(ProgressBar.INVISIBLE);
     }
 
     public void showInfo(ArtistInfo info){

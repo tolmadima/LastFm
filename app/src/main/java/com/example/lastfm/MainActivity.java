@@ -5,9 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private final int NUMBER_OF_ARTISTS = 40;
     private List<Artist> requestedArtists = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private ProgressDialog progressDialog;
+    private ProgressBar progressBar;
 
     ArtistAdapter artistsAdapter = new ArtistAdapter(this::onArtistClick);
 
@@ -41,13 +41,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void retrofitRequest() {
+        progressBar = (ProgressBar) findViewById(R.id.listProgressBar);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
-        progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setMax(100);
-        progressDialog.setMessage("Loading");
-        progressDialog.setTitle("Looking for best artists!");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.show();
         client.getArtists(NUMBER_OF_ARTISTS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -61,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                             requestedArtists = info;
                             showArtists(requestedArtists);
                             hideRefreshing();
-                            finishProgressDialog();
+                            finishProgressBar();
                         }
 
                         @Override
@@ -70,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
                             hideRefreshing();
                             String requestErrorText = getString(R.string.request_error_message);
                             Toast.makeText(MainActivity.this, requestErrorText, Toast.LENGTH_LONG).show();
-                            finishProgressDialog();
+                            finishProgressBar();
                         }
                     });
     }
 
-    private void finishProgressDialog(){
-        progressDialog.dismiss();
+    private void finishProgressBar(){
+        progressBar.setVisibility(ProgressBar.INVISIBLE);
     }
 
     private void hideRefreshing(){
