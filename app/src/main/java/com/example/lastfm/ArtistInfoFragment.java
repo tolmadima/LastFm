@@ -3,7 +3,6 @@ package com.example.lastfm;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +41,7 @@ public class ArtistInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                 Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.artist_info_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_artist_info, container, false);
         tvNameView = view.findViewById(R.id.artist_info_name);
         tvPlayCount = view.findViewById(R.id.artist_info_playcount);
         artistImage = view.findViewById(R.id.big_artist_image);

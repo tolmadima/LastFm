@@ -32,7 +32,7 @@ public class ArtistListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.artist_list_fragment,container,false);
+        View view = inflater.inflate(R.layout.fragment_artist_list,container,false);
         initRecyclerView(view);
         retrofitRequest();
         mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
