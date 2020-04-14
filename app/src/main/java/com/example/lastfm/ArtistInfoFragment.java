@@ -46,9 +46,8 @@ public class ArtistInfoFragment extends Fragment {
         tvPlayCount = view.findViewById(R.id.artist_info_playcount);
         artistImage = view.findViewById(R.id.big_artist_image);
         tvArtistBio = view.findViewById(R.id.artist_info_bio);
-        Bundle bundle = this.getArguments();
-        String name;
-        name = bundle.getString("name");
+        Bundle bundle = getArguments();
+        String name = bundle.getString("name");
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
         client.getArtistInfo(name)
                 .subscribeOn(Schedulers.io())
