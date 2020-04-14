@@ -80,6 +80,10 @@ public class ArtistListFragment extends Fragment {
         artistsAdapter.addItems(requestedArtists);
     }
 
+    public static ArtistListFragment getInstance(){
+        return new ArtistListFragment();
+    }
+
     private void initRecyclerView(View view) {
         RecyclerView artistsRecyclerView = view.findViewById(R.id.rv_artists);
         artistsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -93,14 +97,10 @@ public class ArtistListFragment extends Fragment {
     }
 
     private void onArtistClick(int position) {
-        Fragment fragment = new ArtistInfoFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(TAG_ARTIST_NAME,requestedArtists.get(position).getArtistName());
-        fragment.setArguments(bundle);
-        if (fragment != null) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit();
-        }
+        Fragment fragment = ArtistInfoFragment.getInstance(
+                requestedArtists.get(position).getArtistName());
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
     }
 }

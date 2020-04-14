@@ -11,12 +11,10 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstaceState) {
         super.onCreate(savedInstaceState);
         setContentView(R.layout.activity_main);
-        Fragment fragment = new ArtistListFragment();
-        if (fragment != null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, fragment)
-                    .commit();
-        }
+        Fragment fragment = ArtistListFragment.getInstance();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, fragment)
+                .commit();
     }
 
 }

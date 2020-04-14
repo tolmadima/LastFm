@@ -35,7 +35,7 @@ public class ArtistInfoFragment extends Fragment {
     //0 - самое маленькое разрешение
     //4 - самое большое разрешение
     private static final int PICTURE_SIZE = 3;
-    private final String TAG_ARTIST_NAME = "name";
+    private static final String TAG_ARTIST_NAME = "name";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +69,14 @@ public class ArtistInfoFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public static ArtistInfoFragment getInstance(String artistName){
+        ArtistInfoFragment fragment = new ArtistInfoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(TAG_ARTIST_NAME,artistName);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     private void showInfo(ArtistInfo info){
