@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class ArtistListFragment extends Fragment {
     private final int NUMBER_OF_ARTISTS = 40;
     private List<Artist> requestedArtists = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private final String bundleKey = "name";
 
     private ArtistAdapter artistsAdapter;
 
@@ -65,6 +67,7 @@ public class ArtistListFragment extends Fragment {
                             e.printStackTrace();
                             hideRefreshing();
                             String requestErrorText = getString(R.string.request_error_message);
+                            Toast.makeText(getContext(), requestErrorText, Toast.LENGTH_LONG).show();
                         }
                     });
     }
@@ -92,7 +95,7 @@ public class ArtistListFragment extends Fragment {
     private void onArtistClick(int position) {
         Fragment fragment = new ArtistInfoFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("name",requestedArtists.get(position).getArtistName());
+        bundle.putString(bundleKey,requestedArtists.get(position).getArtistName());
         fragment.setArguments(bundle);
         if (fragment != null) {
             getFragmentManager().beginTransaction()
