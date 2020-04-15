@@ -64,6 +64,7 @@ public class ArtistListFragment extends Fragment {
                             requestedArtists = info;
                             showArtists(requestedArtists);
                             hideRefreshing();
+                            finishProgressBar();
                         }
 
                         @Override
@@ -72,6 +73,7 @@ public class ArtistListFragment extends Fragment {
                             hideRefreshing();
                             String requestErrorText = getString(R.string.request_error_message);
                             Toast.makeText(getContext(), requestErrorText, Toast.LENGTH_LONG).show();
+                            finishProgressBar();
                         }
                     });
     }
