@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class ArtistListFragment extends Fragment {
     private final String TAG_ARTIST_NAME = "name";
 
     private ArtistAdapter artistsAdapter;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -34,6 +36,8 @@ public class ArtistListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_artist_list,container,false);
         initRecyclerView(view);
+        progressBar = (ProgressBar) view.findViewById(R.id.listProgressBar);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
         retrofitRequest();
         mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -70,6 +74,10 @@ public class ArtistListFragment extends Fragment {
                             Toast.makeText(getContext(), requestErrorText, Toast.LENGTH_LONG).show();
                         }
                     });
+    }
+
+    private void finishProgressBar(){
+        progressBar.setVisibility(ProgressBar.INVISIBLE);
     }
 
     private void hideRefreshing(){
