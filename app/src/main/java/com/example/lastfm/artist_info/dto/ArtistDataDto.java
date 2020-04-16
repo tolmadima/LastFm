@@ -1,4 +1,5 @@
-package com.example.lastfm.ArtistInfo;
+package com.example.lastfm.artist_info.dto;
+
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -28,12 +29,6 @@ public class ArtistDataDto {
     @SerializedName("stats")
     @Expose
     private StatsDto stats;
-    @SerializedName("similar")
-    @Expose
-    private Similar similar;
-    @SerializedName("tags")
-    @Expose
-    private Tags tags;
     @SerializedName("bio")
     @Expose
     private BioDto bio;
@@ -92,22 +87,6 @@ public class ArtistDataDto {
 
     public void setStats(StatsDto stats) {
         this.stats = stats;
-    }
-
-    public Similar getSimilar() {
-        return similar;
-    }
-
-    public void setSimilar(Similar similar) {
-        this.similar = similar;
-    }
-
-    public Tags getTags() {
-        return tags;
-    }
-
-    public void setTags(Tags tags) {
-        this.tags = tags;
     }
 
     public BioDto getBio() {

@@ -1,6 +1,6 @@
 package com.example.lastfm;
 
-import com.example.lastfm.ArtistInfo.ArtistInfoDto;
+import com.example.lastfm.artist_info.dto.ArtistInfoDto;
 
 import java.util.List;
 

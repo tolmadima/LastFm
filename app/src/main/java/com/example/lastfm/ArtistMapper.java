@@ -1,83 +1,29 @@
 package com.example.lastfm;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
-public class ArtistMapper implements Parcelable {
+import com.example.lastfm.artist_info.dto.ArtistDataDto;
+import com.example.lastfm.artist_info.ArtistInfo;
+import com.example.lastfm.artist_info.dto.ArtistInfoDto;
+import com.example.lastfm.artist_info.dto.BioDto;
+import com.example.lastfm.artist_info.dto.ImageDto;
+import com.example.lastfm.artist_info.dto.StatsDto;
 
-    public String getName() {
-        return name;
+
+
+public class ArtistMapper {
+
+    private final int PICTURE_SIZE = 3;
+
+    public ArtistInfo map(ArtistInfoDto artistInfoDto){
+        ArtistInfo choosenArtist = new ArtistInfo();
+        ArtistDataDto artist = artistInfoDto.getArtist();
+        choosenArtist.setName(artist.getName());
+        BioDto artistBio = artist.getBio();
+        StatsDto artistStat = artist.getStats();
+        choosenArtist.setPlaycount(artistStat.getPlaycount());
+        choosenArtist.setBio(artistBio.getContent());
+        ImageDto url = artist.getImage().get(PICTURE_SIZE);
+        choosenArtist.setImage(url.getText());
+        return choosenArtist;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPlaycount() {
-        return playcount;
-    }
-
-    public void setPlaycount(String playcount) {
-        this.playcount = playcount;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    private String name;
-    private String playcount;
-    private String bio;
-    private String image;
-
-    public ArtistMapper(String name, String playcount, String bio, String image){
-        this.name = name;
-        this.playcount = playcount;
-        this.bio = bio;
-        this.image = image;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
-        dest.writeString(this.playcount);
-        dest.writeString(this.bio);
-        dest.writeString(this.image);
-    }
-
-    protected ArtistMapper(Parcel in){
-        this.name = in.readString();
-        this.playcount = in.readString();
-        this.bio = in.readString();
-        this.image = in.readString();
-    }
-
-    public static final Parcelable.Creator<ArtistMapper> CREATOR = new Parcelable.Creator<ArtistMapper>() {
-        @Override
-        public ArtistMapper createFromParcel(Parcel source) {
-            return new ArtistMapper(source);
-        }
-        @Override
-        public ArtistMapper[] newArray(int size) {
-            return new ArtistMapper[size];
-        }
-    };
-
 }

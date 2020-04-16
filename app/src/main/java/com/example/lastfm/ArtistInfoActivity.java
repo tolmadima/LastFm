@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lastfm.ArtistInfo.ArtistDataDto;
-import com.example.lastfm.ArtistInfo.ArtistInfoDto;
-import com.example.lastfm.ArtistInfo.BioDto;
-import com.example.lastfm.ArtistInfo.ImageDto;
-import com.example.lastfm.ArtistInfo.StatsDto;
+import com.example.lastfm.artist_info.dto.ArtistDataDto;
+import com.example.lastfm.artist_info.dto.ArtistInfoDto;
+import com.example.lastfm.artist_info.dto.BioDto;
+import com.example.lastfm.artist_info.dto.ImageDto;
+import com.example.lastfm.artist_info.dto.StatsDto;
 import com.squareup.picasso.Picasso;
 
 import io.reactivex.SingleObserver;
