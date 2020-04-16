@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lastfm.artist_info.ArtistInfo;
 import com.example.lastfm.artist_info.dto.ArtistDataDto;
 import com.example.lastfm.artist_info.dto.ArtistInfoDto;
 import com.example.lastfm.artist_info.dto.BioDto;
@@ -56,7 +57,9 @@ public class ArtistInfoActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(ArtistInfoDto info) {
-                showInfo(info);
+                ArtistMapper artistMapper = new ArtistMapper();
+                ArtistInfo artistInfo = artistMapper.map(info);
+                showInfo(artistInfo);
             }
 
             @Override
@@ -67,19 +70,11 @@ public class ArtistInfoActivity extends AppCompatActivity {
         });
     }
 
-    public void showInfo(ArtistInfoDto info){
-        ArtistDataDto data = info.getArtist();
-        String artistName = data.getName();
-        BioDto artistBio = data.getBio();
-        StatsDto artistStat = data.getStats();
-        String playcount = artistStat.getPlaycount();
-        String bio = artistBio.getContent();
-        ImageDto url = data.getImage().get(PICTURE_SIZE);
-        String imageUrl = url.getText();
-        tvNameView.setText(artistName);
-        tvArtistBio.setText(bio);
-        tvPlayCount.setText(playcount);
-        Picasso.get().load(imageUrl).into(artistImage);
-        artistImage.setVisibility(imageUrl != null ? View.VISIBLE : View.GONE);
+    public void showInfo(ArtistInfo info){
+        tvNameView.setText(info.getName());
+        tvArtistBio.setText(info.getBio());
+        tvPlayCount.setText(info.getPlaycount());
+        Picasso.get().load(info.getImage()).into(artistImage);
+        artistImage.setVisibility(info.getImage() != null ? View.VISIBLE : View.GONE);
     }
 }
