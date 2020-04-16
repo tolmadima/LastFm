@@ -1,5 +1,6 @@
 package com.example.lastfm;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,6 +8,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.example.lastfm.artist_info.ArtistInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void retrofitRequest() {
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();

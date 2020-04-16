@@ -1,5 +1,7 @@
 package com.example.lastfm;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
@@ -11,11 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lastfm.artist_info.ArtistData;
 import com.example.lastfm.artist_info.ArtistInfo;
-import com.example.lastfm.artist_info.Bio;
-import com.example.lastfm.artist_info.Image;
-import com.example.lastfm.artist_info.Stats;
+import com.example.lastfm.artist_info.dto.ArtistInfoDto;
 import com.squareup.picasso.Picasso;
 
 import io.reactivex.SingleObserver;
@@ -36,6 +35,7 @@ public class ArtistInfoFragment extends Fragment {
     private static final int PICTURE_SIZE = 3;
     private ProgressBar progressBar;
     private static final String TAG_ARTIST_NAME = "name";
+    private ArtistInfo artistInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,20 +52,35 @@ public class ArtistInfoFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("parcelable", artistInfo);
+
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        artistInfo = savedInstanceState.getParcelable("parcelable");
+    }
+
     private void requestArtist(String name){
 
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
         client.getArtistInfo(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<ArtistInfo>() {
+                .subscribe(new SingleObserver<ArtistInfoDto>() {
             @Override
             public void onSubscribe(Disposable d) {
             }
 
             @Override
-            public void onSuccess(ArtistInfo info) {
-                showInfo(info);
+            public void onSuccess(ArtistInfoDto info) {
+                ArtistMapper artistMapper = new ArtistMapper();
+                artistInfo = artistMapper.map(info);
+                showInfo(artistInfo);
                 hideLoading();
             }
 
@@ -91,18 +106,10 @@ public class ArtistInfoFragment extends Fragment {
     }
 
     private void showInfo(ArtistInfo info){
-        ArtistData data = info.getArtist();
-        String artistName = data.getName();
-        Bio artistBio = data.getBio();
-        Stats artistStat = data.getStats();
-        String playcount = artistStat.getPlaycount();
-        String bio = artistBio.getContent();
-        Image url = data.getImage().get(PICTURE_SIZE);
-        String imageUrl = url.getText();
-        tvNameView.setText(artistName);
-        tvArtistBio.setText(bio);
-        tvPlayCount.setText(playcount);
-        Picasso.get().load(imageUrl).into(artistImage);
-        artistImage.setVisibility(imageUrl != null ? View.VISIBLE : View.GONE);
+        tvNameView.setText(info.getName());
+        tvArtistBio.setText(info.getBio());
+        tvPlayCount.setText(info.getPlaycount());
+        Picasso.get().load(info.getImage()).into(artistImage);
+        artistImage.setVisibility(info.getImage() != null ? View.VISIBLE : View.GONE);
     }
 }
