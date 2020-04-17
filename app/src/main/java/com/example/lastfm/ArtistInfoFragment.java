@@ -1,5 +1,8 @@
 package com.example.lastfm;
 
+import androidx.fragment.app.Fragment;
+
+import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -60,9 +63,11 @@ public class ArtistInfoFragment extends Fragment {
     }
 
     @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        artistInfo = savedInstanceState.getParcelable("parcelable");
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            artistInfo = savedInstanceState.getParcelable("parcelable");
+        }
     }
 
     private void requestArtist(String name){
