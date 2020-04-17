@@ -41,7 +41,6 @@ public class ArtistListFragment extends Fragment {
         requestedArtists = new ArrayList<>();
         progressBar = (ProgressBar) view.findViewById(R.id.list_progress_bar);
         progressBar.setVisibility(ProgressBar.VISIBLE);
-
         retrofitRequest();
         mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
