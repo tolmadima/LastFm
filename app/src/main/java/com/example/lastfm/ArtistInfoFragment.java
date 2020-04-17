@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lastfm.artist_info.ArtistInfo;
+import com.example.lastfm.artist_info.dto.ArtistDataDto;
 import com.example.lastfm.artist_info.dto.ArtistInfoDto;
 import com.squareup.picasso.Picasso;
 
+import io.reactivex.Observable;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -45,6 +48,8 @@ public class ArtistInfoFragment extends Fragment {
                                 Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_artist_info, container, false);
+        progressBar = (ProgressBar) view.findViewById(R.id.artist_progress_bar);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
         tvNameView = view.findViewById(R.id.artist_info_name);
         tvPlayCount = view.findViewById(R.id.artist_info_playcount);
         artistImage = view.findViewById(R.id.big_artist_image);

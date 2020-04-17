@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <ProgressBar
-        android:id="@+id/artistProgressBar"
+        android:id="@+id/artist_progress_bar"
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,8 +17,7 @@
         android:layout_width="@dimen/image_size"
         android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"
-        android:id="@+id/big_artist_image"
-        />
+        android:id="@+id/big_artist_image" />
 
     <TextView
         android:id="@+id/artist_info_name"

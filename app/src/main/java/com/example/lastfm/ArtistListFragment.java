@@ -1,7 +1,6 @@
 package com.example.lastfm;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +23,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ArtistListFragment extends Fragment {
-    private final int NUMBER_OF_ARTISTS = 40;
+    private final int NUMBER_OF_ARTISTS = 20;
     private List<Artist> requestedArtists;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private static final String TAG_ARTIST_NAME = "name";
@@ -40,8 +39,9 @@ public class ArtistListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_artist_list,container,false);
         initRecyclerView(view);
         requestedArtists = new ArrayList<>();
-        progressBar = (ProgressBar) view.findViewById(R.id.listProgressBar);
+        progressBar = (ProgressBar) view.findViewById(R.id.list_progress_bar);
         progressBar.setVisibility(ProgressBar.VISIBLE);
+
         retrofitRequest();
         mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
