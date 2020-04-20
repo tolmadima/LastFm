@@ -1,13 +1,22 @@
 package com.example.lastfm;
 
-import androidx.fragment.app.Fragment;
 
 import java.util.List;
 
 public class Presenter {
-    public void onClick(int position, List<Artist> requestedArtists){
-        Fragment fragment = ArtistInfoFragment.getInstance(
-                requestedArtists.get(position).getArtistName());
-        ArtistListFragment.getInstance().createView(fragment);
+
+    private ArtistListView view;
+    private List<Artist> artists;
+
+    public void onClick(int position){
+        view.createView(artists.get(position));
+    }
+
+    public void onAttach(ArtistListView view){
+        this.view = view;
+    }
+
+    public void onDetach(){
+        view = null;
     }
 }

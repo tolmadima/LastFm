@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ArtistListFragment extends Fragment implements ViewHolder {
+public class ArtistListFragment extends Fragment implements ArtistListView {
     private final int NUMBER_OF_ARTISTS = 40;
     private List<Artist> requestedArtists = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -48,8 +47,16 @@ public class ArtistListFragment extends Fragment implements ViewHolder {
                 retrofitRequest();
             }
         });
+        presenter.onAttach(this);
         return view;
     }
+
+    @Override
+    public void onDestroyView() {
+        presenter.onDetach();
+        super.onDestroyView();
+    }
+
 
     private void retrofitRequest() {
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
@@ -111,13 +118,16 @@ public class ArtistListFragment extends Fragment implements ViewHolder {
     }
 
     private void onArtistClick(int position) {
-        presenter.onClick(position, requestedArtists);
+        presenter.onClick(position);
     }
 
     @Override
-    public void createView(Fragment fragment) {
+    public void createView(Artist artist) {
+        Fragment fragment = ArtistInfoFragment.getInstance(
+                artist.getArtistName());
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
     }
+
 }
