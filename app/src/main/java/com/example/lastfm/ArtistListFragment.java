@@ -50,6 +50,7 @@ public class ArtistListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_artist_list,container,false);
         initRecyclerView(view);
+        Log.i("Request","ViewCreated");
         requestedArtists = new ArrayList<>();
         progressBar = (ProgressBar) view.findViewById(R.id.list_progress_bar);
         progressBar.setVisibility(ProgressBar.VISIBLE);
@@ -66,6 +67,7 @@ public class ArtistListFragment extends Fragment {
     }
 
     private void retrofitRequest() {
+        Log.i("Request","Executing request");
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
         client.getArtists(NUMBER_OF_ARTISTS)
                 .subscribeOn(Schedulers.io())
