@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ArtistListFragment extends Fragment {
+public class ArtistListFragment extends Fragment implements ViewHolder {
     private final int NUMBER_OF_ARTISTS = 40;
     private List<Artist> requestedArtists = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -28,6 +29,7 @@ public class ArtistListFragment extends Fragment {
 
     private ArtistAdapter artistsAdapter;
     private ProgressBar progressBar;
+    private Presenter presenter = new Presenter();
 
 
     @Override
@@ -94,6 +96,8 @@ public class ArtistListFragment extends Fragment {
         return new ArtistListFragment();
     }
 
+
+
     private void initRecyclerView(View view) {
         RecyclerView artistsRecyclerView = view.findViewById(R.id.rv_artists);
         artistsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -107,8 +111,11 @@ public class ArtistListFragment extends Fragment {
     }
 
     private void onArtistClick(int position) {
-        Fragment fragment = ArtistInfoFragment.getInstance(
-                requestedArtists.get(position).getArtistName());
+        presenter.onClick(position, requestedArtists);
+    }
+
+    @Override
+    public void createView(Fragment fragment) {
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
