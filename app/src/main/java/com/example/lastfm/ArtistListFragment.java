@@ -8,6 +8,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,17 @@ public class ArtistListFragment extends Fragment {
 
     private ArtistAdapter artistsAdapter;
     private ProgressBar progressBar;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            Log.i("Startup","First time");
+        }
+        else{
+            Log.i("Startup", "Not first time");
+        }
+    }
 
 
     @Override
