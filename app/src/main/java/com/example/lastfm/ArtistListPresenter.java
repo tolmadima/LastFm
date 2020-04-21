@@ -1,7 +1,7 @@
 package com.example.lastfm;
 
 
-import android.util.Log;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
@@ -17,19 +17,29 @@ public class ArtistListPresenter {
     private ArtistListView view;
     private List<Artist> artists;
     private LastFMClient client;
+    private boolean loading;
+    private boolean refreshing;
 
     ArtistListPresenter(){
         client = ServiceGenerator.getInstance().getLastFMClient();
+        loading = true;
+        if(view != null) {
+            view.setLoading(loading);
+        }
         loadData();
     }
 
     public void onClickArtist(int position){
-        view.openArtist(artists.get(position));
+        if(view != null) {
+            view.openArtist(artists.get(position));
+        }
     }
 
     public void onAttach(ArtistListView view){
         this.view = view;
-        this.view.showList(artists);
+        this.view.setRefreshing(refreshing);
+        this.view.setLoading(loading);
+        this.view.showData(artists);
     }
 
     public void loadData() {
@@ -44,15 +54,25 @@ public class ArtistListPresenter {
                     @Override
                     public void onSuccess(List<Artist> info) {
                         artists = info;
+                        loading = false;
+                        refreshing = false;
                         if(view != null) {
-                            view.showList(artists);
+                            view.showData(artists);
+                            view.setLoading(loading);
+                            view.setRefreshing(refreshing);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        view.showError();
+                        loading = false;
+                        refreshing = false;
+                        if(view != null) {
+                            view.showError();
+                            view.setLoading(loading);
+                            view.setRefreshing(refreshing);
+                        }
                     }
                 });
     }
@@ -62,6 +82,7 @@ public class ArtistListPresenter {
     }
 
     public void onRefresh(){
+        refreshing = true;
         loadData();
     }
 

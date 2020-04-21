@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ArtistListFragment extends Fragment implements ArtistListView {
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private ArtistAdapter artistsAdapter;
     private ProgressBar progressBar;
@@ -30,10 +30,8 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
         View view = inflater.inflate(R.layout.fragment_artist_list,container,false);
         initRecyclerView(view);
         progressBar = (ProgressBar) view.findViewById(R.id.listProgressBar);
-        progressBar.setVisibility(ProgressBar.VISIBLE);
-
-        mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 presenter.onRefresh();
@@ -49,12 +47,20 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
         super.onDestroyView();
     }
 
-    public void finishProgressBar(){
-        progressBar.setVisibility(ProgressBar.INVISIBLE);
+    @Override
+    public void setRefreshing(boolean refreshing) {
+        swipeRefreshLayout.setRefreshing(refreshing);
     }
 
-    public void hideRefreshing(){
-        mSwipeRefreshLayout.setRefreshing(false);
+    @Override
+    public void setLoading(boolean loading) {
+        int visibility;
+        if (loading) {
+            visibility = ProgressBar.VISIBLE;
+        }else{
+            visibility = ProgressBar.INVISIBLE;
+        }
+        progressBar.setVisibility(visibility);
     }
 
     public static ArtistListFragment getInstance(){
@@ -88,21 +94,13 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
 
     @Override
     public void showError(){
-        hideRefreshing();
         String requestErrorText = getString(R.string.request_error_message);
         Toast.makeText(getContext(), requestErrorText, Toast.LENGTH_LONG).show();
-        finishProgressBar();
     }
 
     @Override
-    public void showList(List<Artist> artists){
-        showArtists(artists);
-        hideRefreshing();
-        finishProgressBar();
-    }
-
-    private void showArtists(List<Artist> requestedArtists){
-        artistsAdapter.addItems(requestedArtists);
+    public void showData(List<Artist> artists){
+        artistsAdapter.addItems(artists);
     }
 
 }
