@@ -8,11 +8,11 @@ import com.example.lastfm.artist_info.dto.BioDto;
 import com.example.lastfm.artist_info.dto.ImageDto;
 import com.example.lastfm.artist_info.dto.StatsDto;
 
+import static com.example.lastfm.Constants.PICTURE_SIZE;
 
 
 public class ArtistMapper {
 
-    private final int PICTURE_SIZE = 3;
 
     public ArtistInfo map(ArtistInfoDto artistInfoDto){
         ArtistInfo choosenArtist = new ArtistInfo();
