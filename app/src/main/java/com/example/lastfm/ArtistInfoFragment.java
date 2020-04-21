@@ -31,6 +31,7 @@ public class ArtistInfoFragment extends Fragment {
     private ProgressBar progressBar;
     private static final String TAG_ARTIST_NAME = "name";
     private ArtistInfo artistInfo;
+    private final String TAG_ARTIST_INFO = "Artist info";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +53,7 @@ public class ArtistInfoFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("parcelable", artistInfo);
+        outState.putParcelable(TAG_ARTIST_INFO, artistInfo);
 
     }
 
@@ -60,7 +61,7 @@ public class ArtistInfoFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            artistInfo = savedInstanceState.getParcelable("parcelable");
+            artistInfo = savedInstanceState.getParcelable(TAG_ARTIST_INFO);
         }
     }
 

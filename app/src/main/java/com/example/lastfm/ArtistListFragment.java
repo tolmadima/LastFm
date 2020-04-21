@@ -31,7 +31,7 @@ public class ArtistListFragment extends Fragment {
 
     private ArtistAdapter artistsAdapter;
     private ProgressBar progressBar;
-    private String bundleKey = "Artist list";
+    private final String TAG_ARTISTS = "Artist list";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,7 +102,7 @@ public class ArtistListFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(bundleKey, (ArrayList<? extends Parcelable>) requestedArtists);
+        outState.putParcelableArrayList(TAG_ARTISTS, (ArrayList<? extends Parcelable>) requestedArtists);
 
     }
 
@@ -110,7 +110,7 @@ public class ArtistListFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            requestedArtists = savedInstanceState.getParcelable(bundleKey);
+            requestedArtists = savedInstanceState.getParcelable(TAG_ARTISTS);
         }
     }
 
