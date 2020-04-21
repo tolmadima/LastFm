@@ -28,7 +28,7 @@ public class ArtistListPresenter {
         this.view = view;
     }
 
-    public void artistsRequest() {
+    public void loadData() {
         client.getArtists(NUMBER_OF_ARTISTS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
