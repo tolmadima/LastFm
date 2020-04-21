@@ -74,7 +74,7 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
     }
 
     private void onArtistClick(int position) {
-        presenter.onClick(position);
+        presenter.onClickArtist(position);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
     }
 
     private void artistsRequest() {
-        presenter.retrofitRequest();
+        presenter.artistsRequest();
     }
 
     @Override

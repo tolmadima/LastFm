@@ -14,8 +14,13 @@ public class ArtistListPresenter {
 
     private ArtistListView view;
     private List<Artist> artists;
+    private LastFMClient client;
 
-    public void onClick(int position){
+    ArtistListPresenter(){
+        client = ServiceGenerator.getInstance().getLastFMClient();
+    }
+
+    public void onClickArtist(int position){
         view.openArtist(artists.get(position));
     }
 
@@ -23,8 +28,7 @@ public class ArtistListPresenter {
         this.view = view;
     }
 
-    public void retrofitRequest() {
-        LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
+    public void artistsRequest() {
         client.getArtists(NUMBER_OF_ARTISTS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
