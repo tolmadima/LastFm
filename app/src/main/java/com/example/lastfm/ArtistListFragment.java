@@ -21,10 +21,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ArtistListFragment extends Fragment implements ArtistListView {
-    private final int NUMBER_OF_ARTISTS = 40;
-    private List<Artist> requestedArtists = new ArrayList<>();
+
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private final String TAG_ARTIST_NAME = "name";
 
     private ArtistAdapter artistsAdapter;
     private ProgressBar progressBar;
@@ -39,12 +37,12 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
         initRecyclerView(view);
         progressBar = (ProgressBar) view.findViewById(R.id.listProgressBar);
         progressBar.setVisibility(ProgressBar.VISIBLE);
-        retrofitRequest();
+        artistsRequest();
         mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                retrofitRequest();
+                artistsRequest();
             }
         });
         presenter.onAttach(this);
@@ -57,53 +55,17 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
         super.onDestroyView();
     }
 
-
-    private void retrofitRequest() {
-        LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
-        client.getArtists(NUMBER_OF_ARTISTS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Artist>>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                        }
-
-                        @Override
-                        public void onSuccess(List<Artist> info) {
-                            requestedArtists = info;
-                            showArtists(requestedArtists);
-                            hideRefreshing();
-                            finishProgressBar();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
-                            hideRefreshing();
-                            String requestErrorText = getString(R.string.request_error_message);
-                            Toast.makeText(getContext(), requestErrorText, Toast.LENGTH_LONG).show();
-                            finishProgressBar();
-                        }
-                    });
-    }
-
-    private void finishProgressBar(){
+    public void finishProgressBar(){
         progressBar.setVisibility(ProgressBar.INVISIBLE);
     }
 
-    private void hideRefreshing(){
+    public void hideRefreshing(){
         mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    private void showArtists(List<Artist> requestedArtists){
-        artistsAdapter.addItems(requestedArtists);
     }
 
     public static ArtistListFragment getInstance(){
         return new ArtistListFragment();
     }
-
-
 
     private void initRecyclerView(View view) {
         RecyclerView artistsRecyclerView = view.findViewById(R.id.rv_artists);
@@ -128,6 +90,29 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
+    }
+
+    private void artistsRequest() {
+        presenter.retrofitRequest(this);
+    }
+
+    @Override
+    public void executeOnError(){
+        hideRefreshing();
+        String requestErrorText = getString(R.string.request_error_message);
+        Toast.makeText(getContext(), requestErrorText, Toast.LENGTH_LONG).show();
+        finishProgressBar();
+    }
+
+    @Override
+    public void executeOnSuccess(List<Artist> artists){
+        showArtists(artists);
+        hideRefreshing();
+        finishProgressBar();
+    }
+
+    private void showArtists(List<Artist> requestedArtists){
+        artistsAdapter.addItems(requestedArtists);
     }
 
 }
