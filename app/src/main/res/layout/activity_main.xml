@@ -6,15 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:orientation="horizontal">
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
