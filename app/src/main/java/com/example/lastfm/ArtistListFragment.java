@@ -31,12 +31,12 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
         initRecyclerView(view);
         progressBar = (ProgressBar) view.findViewById(R.id.listProgressBar);
         progressBar.setVisibility(ProgressBar.VISIBLE);
-        loadArtists();
+
         mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadArtists();
+                presenter.onRefresh();
             }
         });
         presenter.onAttach(this);
@@ -84,10 +84,6 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
-    }
-
-    private void loadArtists() {
-        presenter.loadData();
     }
 
     @Override

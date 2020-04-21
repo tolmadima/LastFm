@@ -1,6 +1,8 @@
 package com.example.lastfm;
 
 
+import android.util.Log;
+
 import java.util.List;
 
 import io.reactivex.SingleObserver;
@@ -18,6 +20,7 @@ public class ArtistListPresenter {
 
     ArtistListPresenter(){
         client = ServiceGenerator.getInstance().getLastFMClient();
+        loadData();
     }
 
     public void onClickArtist(int position){
@@ -26,6 +29,7 @@ public class ArtistListPresenter {
 
     public void onAttach(ArtistListView view){
         this.view = view;
+        this.view.showList(artists);
     }
 
     public void loadData() {
@@ -40,7 +44,9 @@ public class ArtistListPresenter {
                     @Override
                     public void onSuccess(List<Artist> info) {
                         artists = info;
-                        view.showList(artists);
+                        if(view != null) {
+                            view.showList(artists);
+                        }
                     }
 
                     @Override
@@ -53,6 +59,10 @@ public class ArtistListPresenter {
 
     public void onDetach(){
         view = null;
+    }
+
+    public void onRefresh(){
+        loadData();
     }
 
 }
