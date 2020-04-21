@@ -35,12 +35,6 @@ public class ArtistListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
-            Log.i("Startup","First time");
-        }
-        else{
-            Log.i("Startup", "Not first time");
-        }
     }
 
 
@@ -81,7 +75,7 @@ public class ArtistListFragment extends Fragment {
                         public void onSuccess(List<Artist> info) {
                             requestedArtists = info;
                             showArtists(requestedArtists);
-                            finishProgressBar();
+                            hideProgressBar();
                             hideRefreshing();
                         }
 
@@ -91,12 +85,12 @@ public class ArtistListFragment extends Fragment {
                             hideRefreshing();
                             String requestErrorText = getString(R.string.request_error_message);
                             Toast.makeText(getContext(), requestErrorText, Toast.LENGTH_LONG).show();
-                            finishProgressBar();
+                            hideProgressBar();
                         }
                     });
     }
 
-    private void finishProgressBar(){
+    private void hideProgressBar(){
         progressBar.setVisibility(ProgressBar.INVISIBLE);
     }
 
