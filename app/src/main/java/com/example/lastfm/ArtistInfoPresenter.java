@@ -1,7 +1,5 @@
 package com.example.lastfm;
 
-import android.widget.Toast;
-
 import com.example.lastfm.ArtistInfo.ArtistData;
 import com.example.lastfm.ArtistInfo.ArtistInfo;
 import com.example.lastfm.ArtistInfo.Bio;
@@ -13,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class InfoPresenter {
+public class ArtistInfoPresenter {
 
     //Вызывается массив картинок размер которых варьируется от 0-4
     //0 - самое маленькое разрешение
@@ -39,7 +37,7 @@ public class InfoPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        view.executeOnError();
+                        view.showError();
                     }
                 });
     }

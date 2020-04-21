@@ -20,7 +20,7 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
 
     private ArtistAdapter artistsAdapter;
     private ProgressBar progressBar;
-    private ListPresenter presenter = new ListPresenter();
+    private ArtistListPresenter presenter = new ArtistListPresenter();
 
 
     @Override
@@ -78,7 +78,7 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
     }
 
     @Override
-    public void createView(Artist artist) {
+    public void openArtist(Artist artist) {
         Fragment fragment = ArtistInfoFragment.getInstance(
                 artist.getArtistName());
         getFragmentManager().beginTransaction()
@@ -91,7 +91,7 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
     }
 
     @Override
-    public void executeOnError(){
+    public void showError(){
         hideRefreshing();
         String requestErrorText = getString(R.string.request_error_message);
         Toast.makeText(getContext(), requestErrorText, Toast.LENGTH_LONG).show();
@@ -99,7 +99,7 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
     }
 
     @Override
-    public void executeOnSuccess(List<Artist> artists){
+    public void showList(List<Artist> artists){
         showArtists(artists);
         hideRefreshing();
         finishProgressBar();

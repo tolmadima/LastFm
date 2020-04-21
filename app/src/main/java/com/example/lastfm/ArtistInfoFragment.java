@@ -12,20 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lastfm.ArtistInfo.ArtistData;
 import com.example.lastfm.ArtistInfo.ArtistInfo;
-import com.example.lastfm.ArtistInfo.Bio;
-import com.example.lastfm.ArtistInfo.Image;
-import com.example.lastfm.ArtistInfo.Stats;
 import com.squareup.picasso.Picasso;
-
-import java.util.function.Predicate;
-
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
 
 
 public class ArtistInfoFragment extends Fragment implements ArtistInfoView {
@@ -36,7 +24,7 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoView {
     private TextView tvArtistBio;
     private ProgressBar progressBar;
     private static final String TAG_ARTIST_NAME = "name";
-    private InfoPresenter presenter = new InfoPresenter();
+    private ArtistInfoPresenter presenter = new ArtistInfoPresenter();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,7 +78,7 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoView {
     }
 
     @Override
-    public void executeOnError() {
+    public void showError() {
         String text = getString(R.string.request_error_message);
         Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
         hideLoading();

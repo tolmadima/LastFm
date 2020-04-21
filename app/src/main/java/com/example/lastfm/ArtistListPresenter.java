@@ -1,10 +1,6 @@
 package com.example.lastfm;
 
 
-import android.widget.Toast;
-
-import androidx.fragment.app.Fragment;
-
 import java.util.List;
 
 import io.reactivex.SingleObserver;
@@ -12,7 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ListPresenter {
+public class ArtistListPresenter {
 
     private final int NUMBER_OF_ARTISTS = 40;
 
@@ -20,7 +16,7 @@ public class ListPresenter {
     private List<Artist> artists;
 
     public void onClick(int position){
-        view.createView(artists.get(position));
+        view.openArtist(artists.get(position));
     }
 
     public void onAttach(ArtistListView view){
@@ -40,13 +36,13 @@ public class ListPresenter {
                     @Override
                     public void onSuccess(List<Artist> info) {
                         artists = info;
-                        view.executeOnSuccess(artists);
+                        view.showList(artists);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        view.executeOnError();
+                        view.showError();
                     }
                 });
     }
