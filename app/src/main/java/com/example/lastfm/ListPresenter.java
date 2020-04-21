@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class Presenter {
+public class ListPresenter {
 
     private final int NUMBER_OF_ARTISTS = 40;
 
@@ -27,7 +27,7 @@ public class Presenter {
         this.view = view;
     }
 
-    public void retrofitRequest(ArtistListFragment fragment) {
+    public void retrofitRequest() {
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
         client.getArtists(NUMBER_OF_ARTISTS)
                 .subscribeOn(Schedulers.io())
@@ -40,13 +40,13 @@ public class Presenter {
                     @Override
                     public void onSuccess(List<Artist> info) {
                         artists = info;
-                        fragment.executeOnSuccess(artists);
+                        view.executeOnSuccess(artists);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        fragment.executeOnError();
+                        view.executeOnError();
                     }
                 });
     }

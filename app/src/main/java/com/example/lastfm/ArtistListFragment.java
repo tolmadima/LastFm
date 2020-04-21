@@ -12,13 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class ArtistListFragment extends Fragment implements ArtistListView {
 
@@ -26,7 +20,7 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
 
     private ArtistAdapter artistsAdapter;
     private ProgressBar progressBar;
-    private Presenter presenter = new Presenter();
+    private ListPresenter presenter = new ListPresenter();
 
 
     @Override
@@ -93,7 +87,7 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
     }
 
     private void artistsRequest() {
-        presenter.retrofitRequest(this);
+        presenter.retrofitRequest();
     }
 
     @Override
