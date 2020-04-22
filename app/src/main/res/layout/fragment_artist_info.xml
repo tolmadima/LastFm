@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <ProgressBar
-        android:id="@+id/artistProgressBar"
+        android:id="@+id/artist_progress_bar"
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,34 +17,24 @@
         android:layout_width="@dimen/image_size"
         android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"
-        android:id="@+id/big_artist_image"
-        />
+        android:id="@+id/artist_info_image" />
 
     <TextView
         android:id="@+id/artist_info_name"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/big_artist_image"
+        android:layout_below="@+id/artist_info_image"
         android:layout_marginTop="@dimen/item_margin"
         android:layout_marginLeft="@dimen/item_margin"
         android:layout_marginRight="@dimen/item_margin"
         />
-    <TextView
-        android:id="@+id/artist_info_listeners"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_below="@+id/artist_info_name"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/item_margin"
-        android:layout_marginLeft="@dimen/item_margin"
-        android:layout_marginRight="@dimen/item_margin"
-        />
+
     <TextView
         android:id="@+id/artist_info_playcount"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/artist_info_listeners"
+        android:layout_below="@+id/artist_info_name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/item_margin"
         android:layout_marginLeft="@dimen/item_margin"

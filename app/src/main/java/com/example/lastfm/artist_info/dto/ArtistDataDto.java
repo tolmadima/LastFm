@@ -1,11 +1,12 @@
-package com.example.lastfm.ArtistInfo;
+package com.example.lastfm.artist_info.dto;
+
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ArtistData {
+public class ArtistDataDto {
 
     @SerializedName("name")
     @Expose
@@ -18,7 +19,7 @@ public class ArtistData {
     private String url;
     @SerializedName("image")
     @Expose
-    private List<Image> image = null;
+    private List<ImageDto> image = null;
     @SerializedName("streamable")
     @Expose
     private String streamable;
@@ -27,16 +28,10 @@ public class ArtistData {
     private String ontour;
     @SerializedName("stats")
     @Expose
-    private Stats stats;
-    @SerializedName("similar")
-    @Expose
-    private Similar similar;
-    @SerializedName("tags")
-    @Expose
-    private Tags tags;
+    private StatsDto stats;
     @SerializedName("bio")
     @Expose
-    private Bio bio;
+    private BioDto bio;
 
     public String getName() {
         return name;
@@ -62,11 +57,11 @@ public class ArtistData {
         this.url = url;
     }
 
-    public List<Image> getImage() {
+    public List<ImageDto> getImage() {
         return image;
     }
 
-    public void setImage(List<Image> image) {
+    public void setImage(List<ImageDto> image) {
         this.image = image;
     }
 
@@ -86,35 +81,19 @@ public class ArtistData {
         this.ontour = ontour;
     }
 
-    public Stats getStats() {
+    public StatsDto getStats() {
         return stats;
     }
 
-    public void setStats(Stats stats) {
+    public void setStats(StatsDto stats) {
         this.stats = stats;
     }
 
-    public Similar getSimilar() {
-        return similar;
-    }
-
-    public void setSimilar(Similar similar) {
-        this.similar = similar;
-    }
-
-    public Tags getTags() {
-        return tags;
-    }
-
-    public void setTags(Tags tags) {
-        this.tags = tags;
-    }
-
-    public Bio getBio() {
+    public BioDto getBio() {
         return bio;
     }
 
-    public void setBio(Bio bio) {
+    public void setBio(BioDto bio) {
         this.bio = bio;
     }
 

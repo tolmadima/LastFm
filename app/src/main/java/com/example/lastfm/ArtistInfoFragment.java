@@ -2,7 +2,8 @@ package com.example.lastfm;
 
 import androidx.fragment.app.Fragment;
 
-import android.content.Context;
+import androidx.annotation.NonNull;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,41 +13,36 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lastfm.ArtistInfo.ArtistData;
-import com.example.lastfm.ArtistInfo.ArtistInfo;
-import com.example.lastfm.ArtistInfo.Bio;
-import com.example.lastfm.ArtistInfo.Image;
-import com.example.lastfm.ArtistInfo.Stats;
+import com.example.lastfm.artist_info.ArtistInfo;
+import com.example.lastfm.artist_info.dto.ArtistInfoDto;
 import com.squareup.picasso.Picasso;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-
-
 public class ArtistInfoFragment extends Fragment {
-    Context context;
     private TextView tvNameView;
     private TextView tvPlayCount;
     private ImageView artistImage;
     private TextView tvArtistBio;
-    //Вызывается массив картинок размер которых варьируется от 0-4
-    //0 - самое маленькое разрешение
-    //4 - самое большое разрешение
-    private static final int PICTURE_SIZE = 3;
     private ProgressBar progressBar;
     private static final String TAG_ARTIST_NAME = "name";
+    private ArtistInfo artistInfo;
+    private final String TAG_ARTIST_INFO = "Artist info";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                 Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_artist_info, container, false);
+        progressBar = (ProgressBar) view.findViewById(R.id.artist_progress_bar);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
         tvNameView = view.findViewById(R.id.artist_info_name);
         tvPlayCount = view.findViewById(R.id.artist_info_playcount);
-        artistImage = view.findViewById(R.id.big_artist_image);
+        artistImage = view.findViewById(R.id.artist_info_image);
         tvArtistBio = view.findViewById(R.id.artist_info_bio);
         Bundle bundle = getArguments();
         String name = bundle.getString(TAG_ARTIST_NAME);
@@ -54,11 +50,34 @@ public class ArtistInfoFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(TAG_ARTIST_INFO, artistInfo);
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            artistInfo = savedInstanceState.getParcelable(TAG_ARTIST_INFO);
+        }
+    }
+
     private void requestArtist(String name){
 
         LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
         client.getArtistInfo(name)
                 .subscribeOn(Schedulers.io())
+                .map(new Function<ArtistInfoDto, ArtistInfo>() {
+
+                    @Override
+                    public ArtistInfo apply(ArtistInfoDto artistInfoDto) throws Exception {
+                        ArtistInfo artistInfo = new ArtistMapper().map(artistInfoDto);
+                        return artistInfo;
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<ArtistInfo>() {
             @Override
@@ -93,18 +112,10 @@ public class ArtistInfoFragment extends Fragment {
     }
 
     private void showInfo(ArtistInfo info){
-        ArtistData data = info.getArtist();
-        String artistName = data.getName();
-        Bio artistBio = data.getBio();
-        Stats artistStat = data.getStats();
-        String playcount = artistStat.getPlaycount();
-        String bio = artistBio.getContent();
-        Image url = data.getImage().get(PICTURE_SIZE);
-        String imageUrl = url.getText();
-        tvNameView.setText(artistName);
-        tvArtistBio.setText(bio);
-        tvPlayCount.setText(playcount);
-        Picasso.get().load(imageUrl).into(artistImage);
-        artistImage.setVisibility(imageUrl != null ? View.VISIBLE : View.GONE);
+        tvNameView.setText(info.getName());
+        tvArtistBio.setText(info.getBio());
+        tvPlayCount.setText(info.getPlaycount());
+        Picasso.get().load(info.getImage()).into(artistImage);
+        artistImage.setVisibility(info.getImage() != null ? View.VISIBLE : View.GONE);
     }
 }

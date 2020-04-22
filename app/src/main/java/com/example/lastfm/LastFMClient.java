@@ -1,6 +1,6 @@
 package com.example.lastfm;
 
-import com.example.lastfm.ArtistInfo.ArtistInfo;
+import com.example.lastfm.artist_info.dto.ArtistInfoDto;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface LastFMClient {
     @GET("?method=chart.gettopartists")
     Single<List<Artist>> getArtists(@Query("limit")int numberArtists);
     @GET("?method=artist.getinfo")
-    Single<ArtistInfo> getArtistInfo(@Query("artist")String name);
+    Single<ArtistInfoDto> getArtistInfo(@Query("artist")String name);
 }
 
 

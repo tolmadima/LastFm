@@ -3,25 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_activity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
-
-    <ProgressBar
-        android:id="@+id/listProgressBar"
-        android:visibility="invisible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:orientation="horizontal">
+    android:layout_height="match_parent">
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

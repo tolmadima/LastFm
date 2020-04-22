@@ -1,14 +1,11 @@
-package com.example.lastfm.ArtistInfo;
+package com.example.lastfm.artist_info.dto;
+
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Bio {
+public class BioDto {
 
-    @SerializedName("links")
-    @Expose
-    private Links links;
-    @SerializedName("published")
     @Expose
     private String published;
     @SerializedName("summary")
@@ -17,14 +14,6 @@ public class Bio {
     @SerializedName("content")
     @Expose
     private String content;
-
-    public Links getLinks() {
-        return links;
-    }
-
-    public void setLinks(Links links) {
-        this.links = links;
-    }
 
     public String getPublished() {
         return published;
