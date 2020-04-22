@@ -1,11 +1,14 @@
 package com.example.lastfm;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +20,19 @@ import java.util.List;
 public class ArtistListFragment extends Fragment implements ArtistListView {
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    private final int NUMBER_OF_ARTISTS = 20;
+    private List<Artist> requestedArtists;
+    private static final String TAG_ARTIST_NAME = "name";
 
     private ArtistAdapter artistsAdapter;
     private ProgressBar progressBar;
     private ArtistListPresenter presenter = new ArtistListPresenter();
+    private final String TAG_ARTISTS = "Artist list";
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
 
     @Override
@@ -29,7 +41,7 @@ public class ArtistListFragment extends Fragment implements ArtistListView {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_artist_list,container,false);
         initRecyclerView(view);
-        progressBar = (ProgressBar) view.findViewById(R.id.listProgressBar);
+        progressBar = (ProgressBar) view.findViewById(R.id.list_progress_bar);
         swipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

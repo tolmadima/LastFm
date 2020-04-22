@@ -1,9 +1,9 @@
-package com.example.lastfm.ArtistInfo;
+package com.example.lastfm.artist_info.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Stats {
+public class StatsDto {
 
     @SerializedName("listeners")
     @Expose

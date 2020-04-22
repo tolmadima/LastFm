@@ -1,9 +1,9 @@
 package com.example.lastfm;
 
-import com.example.lastfm.ArtistInfo.ArtistInfo;
+import com.example.lastfm.artist_info.ArtistInfo;
 
 public interface ArtistInfoView {
-    void executeOnSuccess(ArtistInfo artists);
+    void showInfo(ArtistInfo info);
     void showError();
-    void showInfo(String artistName,String bio,String playcount,String imageUrl);
+    void setLoading(boolean loading);
 }

@@ -2,7 +2,8 @@ package com.example.lastfm;
 
 import androidx.fragment.app.Fragment;
 
-import android.content.Context;
+import androidx.annotation.NonNull;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lastfm.ArtistInfo.ArtistInfo;
+import com.example.lastfm.artist_info.ArtistInfo;
 import com.squareup.picasso.Picasso;
 
-
 public class ArtistInfoFragment extends Fragment implements ArtistInfoView {
-    Context context;
     private TextView tvNameView;
     private TextView tvPlayCount;
     private ImageView artistImage;
@@ -25,23 +24,39 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoView {
     private ProgressBar progressBar;
     private static final String TAG_ARTIST_NAME = "name";
     private ArtistInfoPresenter presenter = new ArtistInfoPresenter();
+    private final String TAG_ARTIST_INFO = "Artist info";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                 Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_artist_info, container, false);
-        progressBar = (ProgressBar) view.findViewById(R.id.artistProgressBar);
+        progressBar = (ProgressBar) view.findViewById(R.id.artist_progress_bar);
         progressBar.setVisibility(ProgressBar.VISIBLE);
         tvNameView = view.findViewById(R.id.artist_info_name);
         tvPlayCount = view.findViewById(R.id.artist_info_playcount);
-        artistImage = view.findViewById(R.id.big_artist_image);
+        artistImage = view.findViewById(R.id.artist_info_image);
         tvArtistBio = view.findViewById(R.id.artist_info_bio);
         Bundle bundle = getArguments();
         String name = bundle.getString(TAG_ARTIST_NAME);
-        presenter.requestArtist(name);
+        presenter.loadData(name);
         presenter.onAttach(this);
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(TAG_ARTIST_INFO, presenter.getSavedData());
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            presenter.setSavedData(savedInstanceState.getParcelable(TAG_ARTIST_INFO));
+        }
     }
 
     @Override
@@ -62,19 +77,14 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoView {
         progressBar.setVisibility(ProgressBar.GONE);
     }
 
-    @Override
-    public void showInfo(String artistName,String bio,String playcount,String imageUrl){
-        tvNameView.setText(artistName);
-        tvArtistBio.setText(bio);
-        tvPlayCount.setText(playcount);
-        Picasso.get().load(imageUrl).into(artistImage);
-        artistImage.setVisibility(imageUrl != null ? View.VISIBLE : View.GONE);
-    }
 
     @Override
-    public void executeOnSuccess(ArtistInfo info){
-        presenter.parseInfo(info);
-        hideLoading();
+    public void showInfo(ArtistInfo info) {
+        tvNameView.setText(info.getName());
+        tvArtistBio.setText(info.getBio());
+        tvPlayCount.setText(info.getPlaycount());
+        Picasso.get().load(info.getImage()).into(artistImage);
+        artistImage.setVisibility(info.getImage() != null ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -82,5 +92,16 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoView {
         String text = getString(R.string.request_error_message);
         Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
         hideLoading();
+    }
+
+    @Override
+    public void setLoading(boolean loading) {
+        int visibility;
+        if (loading) {
+            visibility = ProgressBar.VISIBLE;
+        }else{
+            visibility = ProgressBar.INVISIBLE;
+        }
+        progressBar.setVisibility(visibility);
     }
 }
