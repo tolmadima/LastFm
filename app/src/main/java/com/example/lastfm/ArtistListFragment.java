@@ -15,22 +15,18 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+public class ArtistListFragment extends Fragment implements ArtistListView {
 
-public class ArtistListFragment extends Fragment {
+    private SwipeRefreshLayout swipeRefreshLayout;
     private final int NUMBER_OF_ARTISTS = 20;
     private List<Artist> requestedArtists;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
     private static final String TAG_ARTIST_NAME = "name";
 
     private ArtistAdapter artistsAdapter;
     private ProgressBar progressBar;
+    private ArtistListPresenter presenter = new ArtistListPresenter();
     private final String TAG_ARTISTS = "Artist list";
 
     @Override
@@ -45,78 +41,38 @@ public class ArtistListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_artist_list,container,false);
         initRecyclerView(view);
-        Log.i("Request","ViewCreated");
-        requestedArtists = new ArrayList<>();
         progressBar = (ProgressBar) view.findViewById(R.id.list_progress_bar);
-        progressBar.setVisibility(ProgressBar.VISIBLE);
-        retrofitRequest();
-        mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                retrofitRequest();
-                hideRefreshing();
+                presenter.onRefresh();
             }
         });
+        presenter.onAttach(this);
         return view;
     }
 
-    private void retrofitRequest() {
-        Log.i("Request","Executing request");
-        LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
-        client.getArtists(NUMBER_OF_ARTISTS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Artist>>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                        }
-
-                        @Override
-                        public void onSuccess(List<Artist> info) {
-                            requestedArtists = info;
-                            showArtists(requestedArtists);
-                            hideProgressBar();
-                            hideRefreshing();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
-                            hideRefreshing();
-                            String requestErrorText = getString(R.string.request_error_message);
-                            Toast.makeText(getContext(), requestErrorText, Toast.LENGTH_LONG).show();
-                            hideProgressBar();
-                        }
-                    });
-    }
-
-    private void hideProgressBar(){
-        progressBar.setVisibility(ProgressBar.INVISIBLE);
-    }
-
-    private void hideRefreshing(){
-        mSwipeRefreshLayout.setRefreshing(false);
+    @Override
+    public void onDestroyView() {
+        presenter.onDetach();
+        super.onDestroyView();
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(TAG_ARTISTS, (ArrayList<? extends Parcelable>) requestedArtists);
-
+    public void setRefreshing(boolean refreshing) {
+        swipeRefreshLayout.setRefreshing(refreshing);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            requestedArtists = savedInstanceState.getParcelable(TAG_ARTISTS);
+    public void setLoading(boolean loading) {
+        int visibility;
+        if (loading) {
+            visibility = ProgressBar.VISIBLE;
+        }else{
+            visibility = ProgressBar.INVISIBLE;
         }
-    }
-
-    private void showArtists(List<Artist> requestedArtists){
-        artistsAdapter.clearItems();
-        artistsAdapter.addItems(requestedArtists);
+        progressBar.setVisibility(visibility);
     }
 
     public static ArtistListFragment getInstance(){
@@ -136,11 +92,27 @@ public class ArtistListFragment extends Fragment {
     }
 
     private void onArtistClick(int position) {
+        presenter.onClickArtist(position);
+    }
+
+    @Override
+    public void openArtist(Artist artist) {
         Fragment fragment = ArtistInfoFragment.getInstance(
-                requestedArtists.get(position).getArtistName());
+                artist.getArtistName());
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
+    }
+
+    @Override
+    public void showError(){
+        String requestErrorText = getString(R.string.request_error_message);
+        Toast.makeText(getContext(), requestErrorText, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showData(List<Artist> artists){
+        artistsAdapter.addItems(artists);
     }
 
 }

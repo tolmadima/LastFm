@@ -36,7 +36,8 @@ public class ServiceGenerator {
                     .setLevel(HttpLoggingInterceptor.Level.BODY);
 
     private OkHttpClient httpClient =
-            new OkHttpClient.Builder().addInterceptor(logging).addInterceptor(new LastFmInterceptor()).build();
+            new OkHttpClient.Builder().addInterceptor(logging)
+                    .addInterceptor(new LastFmInterceptor()).build();
 
 
     private Retrofit.Builder builder = new Retrofit.Builder()

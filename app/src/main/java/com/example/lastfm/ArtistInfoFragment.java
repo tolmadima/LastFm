@@ -14,23 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lastfm.artist_info.ArtistInfo;
-import com.example.lastfm.artist_info.dto.ArtistInfoDto;
 import com.squareup.picasso.Picasso;
 
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
-
-public class ArtistInfoFragment extends Fragment {
+public class ArtistInfoFragment extends Fragment implements ArtistInfoView {
     private TextView tvNameView;
     private TextView tvPlayCount;
     private ImageView artistImage;
     private TextView tvArtistBio;
     private ProgressBar progressBar;
     private static final String TAG_ARTIST_NAME = "name";
-    private ArtistInfo artistInfo;
+    private ArtistInfoPresenter presenter = new ArtistInfoPresenter();
     private final String TAG_ARTIST_INFO = "Artist info";
 
     @Override
@@ -46,14 +39,15 @@ public class ArtistInfoFragment extends Fragment {
         tvArtistBio = view.findViewById(R.id.artist_info_bio);
         Bundle bundle = getArguments();
         String name = bundle.getString(TAG_ARTIST_NAME);
-        requestArtist(name);
+        presenter.loadData(name);
+        presenter.onAttach(this);
         return view;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(TAG_ARTIST_INFO, artistInfo);
+        outState.putParcelable(TAG_ARTIST_INFO, presenter.getSavedData());
 
     }
 
@@ -61,42 +55,14 @@ public class ArtistInfoFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            artistInfo = savedInstanceState.getParcelable(TAG_ARTIST_INFO);
+            presenter.setSavedData(savedInstanceState.getParcelable(TAG_ARTIST_INFO));
         }
     }
 
-    private void requestArtist(String name){
-
-        LastFMClient client = ServiceGenerator.getInstance().getLastFMClient();
-        client.getArtistInfo(name)
-                .subscribeOn(Schedulers.io())
-                .map(new Function<ArtistInfoDto, ArtistInfo>() {
-
-                    @Override
-                    public ArtistInfo apply(ArtistInfoDto artistInfoDto) throws Exception {
-                        ArtistInfo artistInfo = new ArtistMapper().map(artistInfoDto);
-                        return artistInfo;
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<ArtistInfo>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-            }
-
-            @Override
-            public void onSuccess(ArtistInfo info) {
-                showInfo(info);
-                hideLoading();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                String text = getString(R.string.request_error_message);
-                Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
-                hideLoading();
-            }
-        });
+    @Override
+    public void onDestroyView() {
+        presenter.onDetach();
+        super.onDestroyView();
     }
 
     public static ArtistInfoFragment getInstance(String artistName){
@@ -111,11 +77,31 @@ public class ArtistInfoFragment extends Fragment {
         progressBar.setVisibility(ProgressBar.GONE);
     }
 
-    private void showInfo(ArtistInfo info){
+
+    @Override
+    public void showInfo(ArtistInfo info) {
         tvNameView.setText(info.getName());
         tvArtistBio.setText(info.getBio());
         tvPlayCount.setText(info.getPlaycount());
         Picasso.get().load(info.getImage()).into(artistImage);
         artistImage.setVisibility(info.getImage() != null ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void showError() {
+        String text = getString(R.string.request_error_message);
+        Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+        hideLoading();
+    }
+
+    @Override
+    public void setLoading(boolean loading) {
+        int visibility;
+        if (loading) {
+            visibility = ProgressBar.VISIBLE;
+        }else{
+            visibility = ProgressBar.INVISIBLE;
+        }
+        progressBar.setVisibility(visibility);
     }
 }
